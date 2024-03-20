@@ -1,0 +1,90 @@
+:root {
+  --bg: #fff;
+  --scrollbar: #eee;
+  --scrollbar-hover: #bbb;
+  --text-color: #333;
+}
+
+html.dark {
+  --bg: #000;
+  --scrollbar: #111;
+  --scrollbar-hover: #222;
+  --text-color: #fff;
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--text-color);
+  overflow: hidden;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+::selection {
+  background: #8884;
+}
+
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: var(--primary-color);
+  opacity: 0.75;
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+
+* {
+  scrollbar-color: var(--scrollbar) var(--bg);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--bg);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+.nest-admin-login::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin-left: -48%;
+  background-image: url('@/assets/svg/login-bg.svg');
+  background-repeat: no-repeat;
+  background-position: 100%;
+  background-size: auto 100%;
+}
+
+.dark .nest-admin-login::before {
+  background-image: url('@/assets/svg/login-bg-dark.svg');
+}

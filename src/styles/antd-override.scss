@@ -1,0 +1,22 @@
+:root {
+  --side-bg: #001529;
+  --header-bg: #fff;
+  --menu-bg: #001529;
+  --menu-sub-bg: #0c2135;
+  --menu-color: #ffffffB3;
+  --menu-color-hl: #fff;
+  --menu-bg-selected: #0960bd;
+}
+
+:root.dark {
+  --side-bg: #212121;
+  --header-bg: #151515;
+  --menu-bg: #212121;
+  --menu-sub-bg: #2d2d2d;
+  --menu-color: #ffffffB3;
+  --menu-color-hl: #fff;
+}
+
+.input-trigger .ant-input {
+  cursor: pointer;
+}
