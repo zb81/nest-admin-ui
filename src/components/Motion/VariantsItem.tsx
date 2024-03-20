@@ -1,13 +1,12 @@
 import { motion } from 'framer-motion'
-import type { PropsWithChildren } from 'react'
 
 import { itemLeftVariants, itemRightVariants } from '@/constants/variants'
 
-type Props = PropsWithChildren<{
+interface Props {
   className?: string
-}>
+}
 
-export function VariantsItemLeft({ children, className }: Props) {
+export function VariantsItemLeft({ children, className }: PWC<Props>) {
   return (
     <motion.div
       className={className}
@@ -18,7 +17,7 @@ export function VariantsItemLeft({ children, className }: Props) {
   )
 }
 
-export function VariantsItemRight({ children, className }: Props) {
+export function VariantsItemRight({ children, className }: PWC<Props>) {
   return (
     <motion.div
       className={className}

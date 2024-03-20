@@ -70,7 +70,7 @@ export function getRules<V = any>(schema: FormSchema, values: V) {
   const ret: Rule[] = [...schema.rules || []]
   const required = getRequired(schema, values)
   if (required)
-    ret.push({ message: getRequiredMessage(schema), required, validateTrigger: schema.validateTrigger })
+    ret.push({ message: getRequiredMessage(schema), required })
 
   return ret
 }

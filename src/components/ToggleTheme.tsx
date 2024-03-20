@@ -17,7 +17,7 @@ const modes = ['light', 'dark', 'auto'] as const
 
 interface Props {
   mode: ColorMode
-  trigger?: JSX.Element
+  trigger?: RN
   onChange: (mode: ColorMode) => void
 }
 

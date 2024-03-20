@@ -1,9 +1,8 @@
 import { motion } from 'framer-motion'
-import type { PropsWithChildren } from 'react'
 
 import { ctnVariants } from '@/constants/variants'
 
-export default function VariantsContainer({ children, className }: PropsWithChildren<{ className?: string }>) {
+export default function VariantsContainer({ children, className }: PWC<{ className?: string }>) {
   return (
     <motion.div
       variants={ctnVariants}

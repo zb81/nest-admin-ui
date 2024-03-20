@@ -2,7 +2,6 @@ import { InfoCircleOutlined } from '@ant-design/icons'
 import { Tooltip } from 'antd'
 import type { TooltipPlacement } from 'antd/es/tooltip'
 import classNames from 'classnames'
-import type { PropsWithChildren } from 'react'
 
 interface Props {
   /**
@@ -33,7 +32,7 @@ interface Props {
   /**
    * Help text
    */
-  text: string | string[] | JSX.Element
+  text: string | string[] | RN
   className?: string
 }
 
@@ -52,7 +51,7 @@ function renderTitle(text: Props['text'], showIndex?: boolean) {
   return text
 }
 
-export default function BasicHelp(p: PropsWithChildren<Props>) {
+export default function BasicHelp(p: PWC<Props>) {
   const { className, placement, text, showIndex, children, color, fontSize, maxWidth } = p
 
   const mergedClass = classNames(

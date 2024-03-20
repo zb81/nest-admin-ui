@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion'
-import type { PropsWithChildren } from 'react'
 
 interface Props {
   className?: string
 }
 
-export default function AnimatedRoute({ children, className }: PropsWithChildren<Props>) {
+export default function AnimatedRoute({ children, className }: PWC<Props>) {
   return (
     <motion.div
       initial={{ opacity: 0, translateX: 40 }}

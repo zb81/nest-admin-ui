@@ -1,5 +1,3 @@
-import type { PropsWithChildren } from 'react'
-
 import BasicHelp from './BasicHelp'
 
 interface Props {
@@ -8,7 +6,7 @@ interface Props {
   normal: boolean
 }
 
-export default function BasicTitle({ helpMessage, children }: PropsWithChildren<Props>) {
+export default function BasicTitle({ helpMessage, children }: PWC<Props>) {
   return (
     <span>
       {children}

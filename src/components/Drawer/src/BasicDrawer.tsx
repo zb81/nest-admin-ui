@@ -1,45 +1,9 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { Button, Drawer, Space, Spin } from 'antd'
-import type { PropsWithChildren } from 'react'
 
-type Props = PropsWithChildren<{
-  title: string
-  /**
-   * @default false
-   */
-  isDetail?: boolean
-  open: boolean
-  /**
-   * @default true
-   */
-  destroyOnClose?: boolean
-  /**
-   * @default false
-   */
-  maskClosable?: boolean
-  /**
-   * @default false
-   */
-  loading?: boolean
-  loadingText?: string
-  /**
-   * @default '50%'
-   */
-  width?: number | string
-  /**
-   * @default true
-   */
-  showFooter?: boolean
-  /**
-   * @default false
-   */
-  confirmLoading?: boolean
-  footer?: JSX.Element
-  onConfirm?: () => void
-  onClose?: () => void
-}>
+import type { DrawerProps } from './types'
 
-export default function BasicDrawer(props: Props) {
+export default function BasicDrawer(props: PWC<DrawerProps>) {
   const {
     title,
     loading = false,

@@ -1,46 +1,90 @@
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { useRequest } from 'ahooks'
-import { Button, Col, Form, Input, Row, Select, Table, type TableColumnsType } from 'antd'
-import { useState } from 'react'
+import { Button, Table, message } from 'antd'
+import { isNumber } from 'lodash-es'
+import { useRef, useState } from 'react'
 
-import { type MenuTreeVo, getMenuTree } from '@/apis/system/menu'
+import { createMenu, getMenuTree, updateMenu } from '@/apis/system/menu'
+import type { MenuDto, MenuTreeVo } from '@/apis/system/menu'
+import { BasicDrawer, useDrawer } from '@/components/Drawer'
+import { Form, useForm } from '@/components/Form'
 import { AnimatedRoute } from '@/components/Motion'
-import { renderAntdIcon } from '@/utils/ant-design-icons'
-import AddButton from '@/views/system/menu/AddButton'
 
-const columns: TableColumnsType<MenuTreeVo> = [
-  {
-    title: '菜单名称',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: '图标',
-    dataIndex: 'icon',
-    key: 'icon',
-    render(v) {
-      return renderAntdIcon(v)
-    },
-  },
-  {
-    title: '路径',
-    dataIndex: 'path',
-    key: 'path',
-  },
-]
+import { formInitialValues, genColumns, genFormSchemas } from './menu.config'
 
 export default function Menu() {
   const [menuTree, setMenuTree] = useState<MenuTreeVo[]>([])
 
-  const { run, loading } = useRequest(getMenuTree, {
+  const { run: getTree, loading } = useRequest(getMenuTree, {
     onSuccess([res, err]) {
       if (!err)
         setMenuTree(res)
     },
   })
 
+  const {
+    open,
+    openDrawer,
+    closeDrawer,
+    confirmLoading,
+    startConfirmLoading,
+    stopConfirmLoading,
+  } = useDrawer()
+
+  const { form } = useForm<MenuDto>()
+  const schemas = genFormSchemas(menuTree)
+  const updateId = useRef<number>()
+
+  function closeMenuDrawer() {
+    updateId.current = undefined
+    closeDrawer()
+    form.resetFields()
+  }
+
+  async function handleConfirm() {
+    try {
+      await form.validateFields()
+      startConfirmLoading()
+      const saveApi = isNumber(updateId.current) ? updateMenu : createMenu
+      const [_, err] = await saveApi({
+        ...form.getFieldsValue(),
+        id: updateId.current,
+      })
+      if (!err) {
+        message.success('保存成功')
+        closeMenuDrawer()
+        getTree()
+      }
+    }
+    catch (e) {
+      console.error(e)
+    }
+    finally {
+      stopConfirmLoading()
+    }
+  }
+
+  function handleClickEdit(r: MenuTreeVo) {
+    updateId.current = r.id
+    form.setFieldsValue(r)
+    openDrawer()
+  }
+
+  const columns = genColumns(record => (
+    <>
+      <Button
+        type="link"
+        size="small"
+        icon={<EditOutlined />}
+        onClick={() => handleClickEdit(record)}
+      />
+      <Button type="link" size="small" danger icon={<DeleteOutlined />}></Button>
+    </>
+  ))
+
   return (
     <AnimatedRoute>
-      <Form
+      {/* <Form
         className="bg-white dark:bg-dark-bg mb-4 rounded-md px-4 py-3"
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
@@ -64,11 +108,11 @@ export default function Menu() {
             <Button type="primary" className="ml-2">查询</Button>
           </Col>
         </Row>
-      </Form>
+      </Form> */}
 
       <div className="bg-white dark:bg-dark-bg p-2">
         <div className="mb-2">
-          <AddButton menuTree={menuTree} onSave={() => run()} />
+          <Button type="primary" onClick={openDrawer}>新增菜单</Button>
         </div>
 
         <Table
@@ -79,6 +123,23 @@ export default function Menu() {
           loading={loading}
         />
       </div>
+
+      <BasicDrawer
+        title="新增菜单"
+        open={open}
+        confirmLoading={confirmLoading}
+        onClose={closeMenuDrawer}
+        onConfirm={handleConfirm}
+      >
+        <Form
+          form={form}
+          schemas={schemas}
+          initialValues={formInitialValues}
+          labelWidth={100}
+          labelAlign="right"
+          colProps={{ lg: 12, md: 24 }}
+        />
+      </BasicDrawer>
     </AnimatedRoute>
   )
 }

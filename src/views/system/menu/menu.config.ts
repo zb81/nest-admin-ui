@@ -1,11 +1,14 @@
-import type { CreateMenuDto, MenuTreeVo } from '@/apis/system/menu'
+import type { TableColumnsType } from 'antd'
+
+import type { MenuDto, MenuTreeVo } from '@/apis/system/menu'
 import type { FormSchema } from '@/components/Form/src/types'
+import { renderAntdIcon } from '@/utils/ant-design-icons'
 
 const isDir = (type: number) => type === 0
 const isMenu = (type: number) => type === 1
 const isButton = (type: number) => type === 2
 
-export const formInitialValues = {
+export const formInitialValues: MenuDto = {
   type: 0,
   name: '',
   keepAlive: 0,
@@ -14,7 +17,34 @@ export const formInitialValues = {
   show: 1,
 }
 
-export const columns = []
+export function genColumns(optRender: (record: MenuTreeVo) => RN): TableColumnsType<MenuTreeVo> {
+  return [
+    {
+      title: '菜单名称',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '图标',
+      dataIndex: 'icon',
+      key: 'icon',
+      render(v) {
+        return renderAntdIcon(v)
+      },
+    },
+    {
+      title: '路径',
+      dataIndex: 'path',
+      key: 'path',
+    },
+    {
+      title: '操作',
+      render(_, record) {
+        return optRender(record)
+      },
+    },
+  ]
+}
 
 export const searchFormSchemas: FormSchema[] = [
   {
@@ -37,7 +67,7 @@ export const searchFormSchemas: FormSchema[] = [
   },
 ]
 
-export function genFormSchemas(menuTree: MenuTreeVo[]): FormSchema<CreateMenuDto>[] {
+export function genFormSchemas(menuTree: MenuTreeVo[]): FormSchema<MenuDto>[] {
   return [
     {
       field: 'type',
@@ -98,6 +128,7 @@ export function genFormSchemas(menuTree: MenuTreeVo[]): FormSchema<CreateMenuDto
       field: 'permission',
       label: '权限标识',
       component: 'Input',
+      required: true,
       show: ({ values }) => isButton(values.type),
     },
     {
@@ -121,7 +152,7 @@ export function genFormSchemas(menuTree: MenuTreeVo[]): FormSchema<CreateMenuDto
           { label: '否', value: 0 },
         ],
       },
-      show: ({ values }) => !isButton(values.type),
+      show: ({ values }) => isMenu(values.type),
     },
 
     {

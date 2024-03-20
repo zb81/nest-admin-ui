@@ -17,7 +17,8 @@ export interface MenuTreeVo {
   children?: MenuTreeVo[]
 }
 
-export interface CreateMenuDto {
+export interface MenuDto {
+  id?: number
   component?: null | string
   icon?: null | string
   isExt: number
