@@ -5,7 +5,7 @@ import type { CreateMenuDto, MenuTreeVo } from '@/apis/system/menu'
 import { BasicDrawer, useDrawer } from '@/components/Drawer'
 import { Form, useForm } from '@/components/Form'
 
-import { formInitialValues, formSchemas } from './menu.config'
+import { formInitialValues, genFormSchemas } from './menu.config'
 
 interface Props {
   menuTree: MenuTreeVo[]
@@ -23,6 +23,7 @@ export default function AddButton({ menuTree, onSave }: Props) {
   } = useDrawer()
 
   const { form } = useForm<CreateMenuDto>()
+  const schemas = genFormSchemas(menuTree)
 
   async function handleConfirm() {
     await form.validateFields()
@@ -51,7 +52,7 @@ export default function AddButton({ menuTree, onSave }: Props) {
       >
         <Form
           form={form}
-          schemas={formSchemas}
+          schemas={schemas}
           initialValues={formInitialValues}
           labelWidth={100}
           labelAlign="right"

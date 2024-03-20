@@ -19,6 +19,7 @@
     "classnames": "^2.5.1",
     "consola": "^3.2.3",
     "framer-motion": "^11.0.6",
+    "immer": "^10.0.4",
     "lodash-es": "^4.17.21",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
