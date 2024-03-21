@@ -10,6 +10,7 @@ import { MenusContext } from '@/contexts/MenusContext'
 import HeaderLeft from '@/layouts/HeaderLeft'
 import HeaderRight from '@/layouts/HeaderRight'
 import { router } from '@/router'
+import { renderAntdIcon } from '@/utils/ant-design-icons'
 import Loading from '@/views/fallbacks/Loading'
 
 const { Header, Sider, Content } = Layout
@@ -20,6 +21,7 @@ function transformMenus(menus: AccountMenuVo[]): MenuProps['items'] {
       key: `${m.id}:${m.path}`,
       label: m.name,
       children: m.children && transformMenus(m.children),
+      icon: renderAntdIcon(m.icon),
     }
   })
 }

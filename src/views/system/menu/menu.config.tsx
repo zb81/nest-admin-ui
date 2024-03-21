@@ -1,8 +1,10 @@
+import { Tag } from 'antd'
 import type { TableColumnsType } from 'antd'
 
 import type { MenuDto, MenuTreeVo } from '@/apis/system/menu'
 import type { FormSchema } from '@/components/Form/src/types'
 import { renderAntdIcon } from '@/utils/ant-design-icons'
+import { formatDateTimeString } from '@/utils/date-time'
 
 const isDir = (type: number) => type === 0
 const isMenu = (type: number) => type === 1
@@ -12,33 +14,51 @@ export const formInitialValues: MenuDto = {
   type: 0,
   name: '',
   keepAlive: 0,
-  isExt: 0,
+  external: 0,
   status: 1,
   show: 1,
-}
+} as const
 
 export function genColumns(optRender: (record: MenuTreeVo) => RN): TableColumnsType<MenuTreeVo> {
   return [
-    {
-      title: '菜单名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
+    { title: '菜单名称', dataIndex: 'name' },
     {
       title: '图标',
       dataIndex: 'icon',
-      key: 'icon',
+      width: 50,
+      align: 'center',
       render(v) {
         return renderAntdIcon(v)
       },
     },
+    { title: '权限标识', dataIndex: 'permission', align: 'center' },
+    { title: '组件', dataIndex: 'component', align: 'center' },
+    { title: '排序', dataIndex: 'orderNo', align: 'center', width: 60 },
     {
-      title: '路径',
-      dataIndex: 'path',
-      key: 'path',
+      title: '状态',
+      dataIndex: 'status',
+      align: 'center',
+      width: 80,
+      render(v) {
+        return v === 1
+          ? <Tag color="success" className="m-0">启用</Tag>
+          : <Tag color="error" className="m-0">停用</Tag>
+      },
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createdAt',
+      align: 'center',
+      width: 180,
+      render(v) {
+        return formatDateTimeString(v)
+      },
     },
     {
       title: '操作',
+      key: 'options',
+      align: 'center',
+      width: 80,
       render(_, record) {
         return optRender(record)
       },
@@ -108,8 +128,8 @@ export function genFormSchemas(menuTree: MenuTreeVo[]): FormSchema<MenuDto>[] {
       field: 'icon',
       label: '图标',
       component: 'IconPicker',
-      required: true,
-      show: ({ values }) => isDir(values.type),
+      required: ({ values }) => isDir(values.type),
+      show: ({ values }) => !isButton(values.type),
     },
     {
       field: 'path',
@@ -143,7 +163,7 @@ export function genFormSchemas(menuTree: MenuTreeVo[]): FormSchema<MenuDto>[] {
       },
     },
     {
-      field: 'isExt',
+      field: 'external',
       label: '是否外链',
       component: 'RadioButtonGroup',
       componentProps: {

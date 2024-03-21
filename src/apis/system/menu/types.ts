@@ -10,10 +10,10 @@ export interface MenuTreeVo {
   icon: string
   orderNo: number
   component: any
-  isExt: number
+  external: number
   keepAlive: number
   show: number
-  locked: number
+  status: number
   children?: MenuTreeVo[]
 }
 
@@ -21,7 +21,7 @@ export interface MenuDto {
   id?: number
   component?: null | string
   icon?: null | string
-  isExt: number
+  external: number
   keepAlive: number
   status: number
   name: string

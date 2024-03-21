@@ -1,11 +1,12 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { EditOutlined } from '@ant-design/icons'
 import { useRequest } from 'ahooks'
 import { Button, Table, message } from 'antd'
 import { isNumber } from 'lodash-es'
 import { useRef, useState } from 'react'
 
-import { createMenu, getMenuTree, updateMenu } from '@/apis/system/menu'
+import { createMenu, deleteMenu, getMenuTree, updateMenu } from '@/apis/system/menu'
 import type { MenuDto, MenuTreeVo } from '@/apis/system/menu'
+import { ConfirmButton } from '@/components/Button'
 import { BasicDrawer, useDrawer } from '@/components/Drawer'
 import { Form, useForm } from '@/components/Form'
 import { AnimatedRoute } from '@/components/Motion'
@@ -32,11 +33,13 @@ export default function Menu() {
   } = useDrawer()
 
   const { form } = useForm<MenuDto>()
+  const [initialValues, setInitialValues] = useState<MenuDto>(formInitialValues)
   const schemas = genFormSchemas(menuTree)
   const updateId = useRef<number>()
 
   function closeMenuDrawer() {
     updateId.current = undefined
+    setInitialValues(formInitialValues)
     closeDrawer()
     form.resetFields()
   }
@@ -66,8 +69,14 @@ export default function Menu() {
 
   function handleClickEdit(r: MenuTreeVo) {
     updateId.current = r.id
-    form.setFieldsValue(r)
+    setInitialValues(r)
     openDrawer()
+  }
+
+  async function handleClickDelete(id: number) {
+    await deleteMenu(id)
+    message.success('删除成功')
+    getTree()
   }
 
   const columns = genColumns(record => (
@@ -78,7 +87,7 @@ export default function Menu() {
         icon={<EditOutlined />}
         onClick={() => handleClickEdit(record)}
       />
-      <Button type="link" size="small" danger icon={<DeleteOutlined />}></Button>
+      <ConfirmButton onConfirm={() => handleClickDelete(record.id)} />
     </>
   ))
 
@@ -116,6 +125,8 @@ export default function Menu() {
         </div>
 
         <Table
+          bordered
+          size="small"
           rowKey={menu => menu.id}
           columns={columns}
           dataSource={menuTree}
@@ -134,7 +145,7 @@ export default function Menu() {
         <Form
           form={form}
           schemas={schemas}
-          initialValues={formInitialValues}
+          initialValues={initialValues}
           labelWidth={100}
           labelAlign="right"
           colProps={{ lg: 12, md: 24 }}
