@@ -1,17 +1,18 @@
 import type { ColProps } from 'antd'
 import type { Rule } from 'antd/es/form'
 
-import type { ComponentType } from './component'
-import type { FormItemProps } from './form-item'
+import type { ComponentType } from './components.type'
+import type { FormItemProps } from './form-item.type'
 
 interface RenderParams<V> {
   values: V
-  field: string
+  field?: string
 }
 type RenderCallback<V, R = RN> = (p: RenderParams<V>) => R
 
 export interface FormSchema<V = any> {
-  field: Extract<keyof V, string>
+  key?: string
+  field?: Extract<keyof V, string>
   label?: string | RN | RenderCallback<V>
   required?: boolean | RenderCallback<V, boolean>
   rules?: Rule[]

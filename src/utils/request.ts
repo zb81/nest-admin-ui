@@ -4,6 +4,7 @@ import { message as antdMessage } from 'antd'
 
 import { refreshToken } from '@/apis/auth'
 import { ACCESS_TOKEN_KEY } from '@/constants/storage-keys'
+import { redirectToLogin } from '@/router'
 import { localCache } from '@/utils/cache'
 import { logger } from '@/utils/logger'
 
@@ -70,6 +71,11 @@ export const request = new Request({
           })
         }
       })
+    }
+    else if ([20004, 20005].includes(code)) {
+      redirectToLogin()
+      antdMessage.error(message)
+      throw new Error(message)
     }
     else {
       antdMessage.error(message)

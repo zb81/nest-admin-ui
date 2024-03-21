@@ -1,5 +1,5 @@
 import { DesktopOutlined, MoonOutlined, SunOutlined } from '@ant-design/icons'
-import { Popover } from 'antd'
+import { Button, Popover } from 'antd'
 import classnames from 'classnames'
 
 import { useDark } from '@/hooks/useDark'
@@ -23,17 +23,19 @@ interface Props {
 
 function ToggleTheme({ mode, trigger, onChange }: Props) {
   const isDark = useDark(mode)
+  trigger = trigger || <Button type="text" icon={iconMap[isDark ? 'dark' : 'light']} />
 
   const modeList = (
     <ul>
       {modes.map(m => (
-        <li
-          key={m}
-          className={classnames('btn flex items-center', { 'text-primary': m === mode })}
-          onClick={() => onChange(m)}
-        >
-          {iconMap[m]}
-          <span className="ml-2">{upperFirst(m)}</span>
+        <li key={m} onClick={() => onChange(m)}>
+          <Button
+            className={classnames({ 'text-primary': m === mode })}
+            type="text"
+            icon={iconMap[m]}
+          >
+            {upperFirst(m)}
+          </Button>
         </li>
       ))}
     </ul>
@@ -46,11 +48,7 @@ function ToggleTheme({ mode, trigger, onChange }: Props) {
       content={modeList}
       trigger="click"
     >
-      {trigger ?? (
-        <a className="btn">
-          {iconMap[isDark ? 'dark' : 'light']}
-        </a>
-      )}
+      {trigger}
     </Popover>
   )
 }

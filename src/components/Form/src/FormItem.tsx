@@ -3,7 +3,7 @@ import { Form as AntForm, Col } from 'antd'
 import { InputUnit } from '@/components/Form/src/helpers/renders'
 
 import { getFormItemCol, getLabelCol, getRequired, getRules, getShow } from './helpers/getters'
-import type { FormItemProps } from './types/form-item'
+import type { FormItemProps } from './types/form-item.type'
 
 export default function FormItem(props: FormItemProps) {
   const {
@@ -13,12 +13,15 @@ export default function FormItem(props: FormItemProps) {
     field,
     label,
     colon,
+    className,
+    allowClear = true,
   } = props
 
   return (
     getShow(schema, values) && (
       <Col {...getFormItemCol(schema, formProps)}>
         <AntForm.Item
+          className={className}
           name={field}
           label={label}
           colon={colon}
@@ -26,7 +29,7 @@ export default function FormItem(props: FormItemProps) {
           {...getLabelCol(schema, formProps)}
           rules={getRules(schema, values)}
         >
-          <InputUnit schema={schema} />
+          <InputUnit allowClear={allowClear} schema={schema} />
         </AntForm.Item>
       </Col>
     )

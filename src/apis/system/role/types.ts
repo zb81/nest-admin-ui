@@ -1,8 +1,19 @@
-export interface CreateRoleDto {
+export interface RoleDto {
+  id?: number
   value: string
   name: string
   status: number
   remark?: string
   menuIds: number[]
-  [property: string]: any
+}
+
+export interface RoleVo {
+  id: number
+  name: string
+  value: string
+  remark: string | null
+  status: number
+  default: boolean | null
+  createdAt: string
+  updatedAt: string
 }

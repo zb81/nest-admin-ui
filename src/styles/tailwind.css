@@ -3,15 +3,6 @@
 @tailwind utilities;
 
 @layer components {
-  .hover-btn {
-    @apply select-none cursor-pointer hover:bg-[#8883] dark:hover:bg-[#fff2];
-  }
-  .btn {
-    @apply hover-btn p-2 font-semibold rounded-lg;
-  }
-  .header-btn {
-    @apply hover-btn h-full px-[10px] flex items-center;
-  }
   .flex-row-center {
     @apply flex justify-center items-center;
   }

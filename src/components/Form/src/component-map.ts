@@ -4,8 +4,9 @@ import type React from 'react'
 import { BasicTitle } from '@/components/Basic'
 import { IconPicker } from '@/components/Icon'
 
+import FormActions from './components/FormActions'
 import RadioButtonGroup from './components/RadioButtonGroup'
-import type { ComponentType } from './types/component'
+import type { ComponentType } from './types/components.type'
 
 const componentMap = new Map<ComponentType, React.FC<any>>()
 
@@ -31,8 +32,29 @@ componentMap.set('WeekPicker', DatePicker.WeekPicker)
 componentMap.set('TimePicker', DatePicker.TimePicker)
 componentMap.set('TimeRangePicker', DatePicker.RangePicker)
 
+componentMap.set('FormActions', FormActions)
 componentMap.set('BasicTitle', BasicTitle)
 componentMap.set('RadioButtonGroup', RadioButtonGroup)
 componentMap.set('IconPicker', IconPicker)
 
 export { componentMap }
+
+const clearableComponents: ComponentType[] = [
+  'Input',
+  'InputPassword',
+  'InputSearch',
+  'InputTextArea',
+  'TreeSelect',
+  'Cascader',
+  'DatePicker',
+  'MonthPicker',
+  'TimePicker',
+  'WeekPicker',
+  'TimeRangePicker',
+  'RangePicker',
+  'Select',
+]
+
+export function isClearable(component: ComponentType) {
+  return clearableComponents.includes(component)
+}

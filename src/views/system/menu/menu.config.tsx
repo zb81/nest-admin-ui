@@ -2,7 +2,7 @@ import { Tag } from 'antd'
 import type { TableColumnsType } from 'antd'
 
 import type { MenuDto, MenuTreeVo } from '@/apis/system/menu'
-import type { FormSchema } from '@/components/Form/src/types'
+import type { FormSchema } from '@/components/Form'
 import { renderAntdIcon } from '@/utils/ant-design-icons'
 import { formatDateTimeString } from '@/utils/date-time'
 
@@ -50,9 +50,7 @@ export function genColumns(optRender: (record: MenuTreeVo) => RN): TableColumnsT
       dataIndex: 'createdAt',
       align: 'center',
       width: 180,
-      render(v) {
-        return formatDateTimeString(v)
-      },
+      render: v => formatDateTimeString(v),
     },
     {
       title: '操作',

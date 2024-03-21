@@ -1,7 +1,7 @@
 import type { Rule } from 'antd/es/form'
 import { isFunction, isNumber, isString } from 'lodash-es'
 
-import type { FormProps, FormSchema } from '@/components/Form/src/types'
+import type { FormProps, FormSchema } from '@/components/Form'
 
 export function getLabelCol(schema: FormSchema, formProps: FormProps) {
   const {

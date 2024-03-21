@@ -6,7 +6,7 @@ interface Option {
   disabled?: boolean
 }
 
-export interface RadioButtonGroupProps {
+interface RadioButtonGroupProps {
   value?: Option['value']
   options?: Option[]
   onChange?: (value: Option['value']) => void

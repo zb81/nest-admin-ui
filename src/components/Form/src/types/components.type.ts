@@ -4,6 +4,7 @@ interface CustomComponentsProps {
   BasicTitle: RCP<typeof import('@/components/Basic')['BasicTitle']>
   RadioButtonGroup: RCP<typeof import('../components/RadioButtonGroup')['default']>
   IconPicker: RCP<typeof import('@/components/Icon')['IconPicker']>
+  FormActions: RCP<typeof import('../components/FormActions')['default']>
 }
 
 export interface ComponentProps {
@@ -29,6 +30,7 @@ export interface ComponentProps {
   TimePicker: RCP<typeof import('antd/es/time-picker')['default']>
   TimeRangePicker: RCP<typeof import('antd/es/time-picker')['default']['RangePicker']>
 
+  FormActions: CustomComponentsProps['FormActions']
   BasicTitle: CustomComponentsProps['BasicTitle']
   RadioButtonGroup: CustomComponentsProps['RadioButtonGroup'] & ComponentProps['RadioGroup']
   IconPicker: CustomComponentsProps['IconPicker']

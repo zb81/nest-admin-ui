@@ -93,32 +93,6 @@ export default function Menu() {
 
   return (
     <AnimatedRoute>
-      {/* <Form
-        className="bg-white dark:bg-dark-bg mb-4 rounded-md px-4 py-3"
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-      >
-        <Row>
-          <Col span={8}>
-            <Form.Item label="菜单名称" className="mb-0">
-              <Input placeholder="请输入" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item label="状态" className="mb-0">
-              <Select
-                placeholder="请输入"
-                options={[{ label: '启用', value: '1' }, { label: '禁用', value: '0' }]}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={8} className="text-right">
-            <Button>重置</Button>
-            <Button type="primary" className="ml-2">查询</Button>
-          </Col>
-        </Row>
-      </Form> */}
-
       <div className="bg-white dark:bg-dark-bg p-2">
         <div className="mb-2">
           <Button type="primary" onClick={openDrawer}>新增菜单</Button>

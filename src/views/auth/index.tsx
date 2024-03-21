@@ -23,7 +23,7 @@ function LoginHeader() {
         animate="show"
       >
         <Logo size="3rem" color="#fff" />
-        <h1 className="ml-3 text-6 font-medium">{import.meta.env.VITE_APP_TITLE}</h1>
+        <h1 className="ml-3 text-xl font-medium">{import.meta.env.VITE_APP_TITLE}</h1>
       </motion.div>
       <ToggleTheme mode={mode} onChange={m => setMode(m)} />
     </div>
