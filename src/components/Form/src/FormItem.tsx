@@ -29,7 +29,11 @@ export default function FormItem(props: FormItemProps) {
           {...getLabelCol(schema, formProps)}
           rules={getRules(schema, values)}
         >
-          <InputUnit allowClear={allowClear} schema={schema} />
+          <InputUnit
+            onPressEnter={formProps.onPressEnter}
+            allowClear={allowClear}
+            schema={schema}
+          />
         </AntForm.Item>
       </Col>
     )

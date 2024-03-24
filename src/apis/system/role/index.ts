@@ -2,8 +2,8 @@ import { request } from '@/utils/request'
 
 import type { RoleDto, RoleVo } from './types'
 
-export function getRoleList() {
-  return request.get<RoleVo[]>('/system/role')
+export function getRoleList(params: any) {
+  return request.get<RoleVo[]>('/system/role', { params })
 }
 
 export function createRole(data: RoleDto) {

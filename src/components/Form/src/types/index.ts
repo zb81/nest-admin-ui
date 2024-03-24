@@ -7,4 +7,5 @@ export interface InputUnitProps {
   value?: any
   allowClear?: boolean
   onChange?: (v: any) => void
+  onPressEnter?: () => void
 }

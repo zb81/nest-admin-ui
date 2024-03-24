@@ -30,7 +30,7 @@ export const request = new Request({
     return config
   },
   responseInterceptor: (res) => {
-    const { code, message, data } = res.data as IResWrapper
+    const { code, message, data } = res.data as ResWrapper
     if (code === 200) {
       return data
     }

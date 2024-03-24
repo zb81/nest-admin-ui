@@ -1,6 +1,7 @@
 import { useMount } from 'ahooks'
 import type { ThemeConfig } from 'antd'
 import { ConfigProvider, theme } from 'antd'
+import zhCN from 'antd/locale/zh_CN'
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
@@ -61,7 +62,7 @@ export default function App() {
     return <Loading />
 
   return (
-    <ConfigProvider theme={antdTheme} wave={{ disabled: true }}>
+    <ConfigProvider locale={zhCN} theme={antdTheme} wave={{ disabled: true }}>
       <ColorModeContext.Provider value={{ mode, setMode }}>
         <ThemeColorContext.Provider value={{ color: primaryColor, setColor: setPrimaryColor }}>
           <MenusContext.Provider value={{ menus, setMenus }}>

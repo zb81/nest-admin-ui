@@ -1,38 +1,18 @@
+import { ReloadOutlined } from '@ant-design/icons'
 import { useRequest } from 'ahooks'
-import { Table as AntTable, Divider } from 'antd'
-import type { TableColumnsType } from 'antd'
+import { Table as AntTable, Button, Card, Divider, Space } from 'antd'
 import { memo, useState } from 'react'
 
+import { logger } from '@/utils/logger'
+
 import SearchForm from './SearchForm'
+import { getAntColumns } from './helpers'
 import ColumnsSetting from './settings/ColumnsSetting'
-import type { ColumnProps, TableProps } from './types'
+import type { TableProps } from './types'
 
-function genAntColumns(columns: ColumnProps[], showIndexColumn: boolean) {
-  const ret: TableColumnsType<any> = columns.filter(col => col.show).map((col) => {
-    return {
-      title: col.title,
-      dataIndex: col.dataIndex,
-      key: col.key,
-      align: col.align,
-      render: col.render,
-    }
-  })
-
-  if (showIndexColumn) {
-    ret.unshift({
-      title: '序号',
-      key: '$index$',
-      align: 'center',
-      width: 60,
-      render: (_, __, index) => index + 1,
-    })
-  }
-
-  return ret
-}
-
-const Table = memo((props: TableProps) => {
+function Table<R extends object>(props: TableProps<R>) {
   const {
+    title,
     columns,
     api,
     rowKey = 'id',
@@ -45,64 +25,92 @@ const Table = memo((props: TableProps) => {
     searchFormProps,
   } = props
 
-  const [tableData, setTableData] = useState([])
+  const [tableData, setTableData] = useState<R[]>([])
   const [internalShowIndex, setInternalShowIndex] = useState(true)
+  const [total, setTotal] = useState(0)
 
   const finalShowIndex = showIndexColumn && internalShowIndex
 
-  useRequest(api, {
+  const { loading, run } = useRequest(api, {
     onSuccess: ([data, err]) => {
       if (!err) {
-        if (pagination)
-          setTableData(data.list)
-        else
+        if (Array.isArray(data)) {
           setTableData(data)
+        }
+        else {
+          setTableData(data.list)
+          setTotal(data.total)
+        }
       }
     },
   })
 
-  const [antColumns, setAntColumns] = useState(genAntColumns(columns, finalShowIndex))
+  const [antColumns, setAntColumns] = useState(getAntColumns(columns, finalShowIndex))
 
   const showSearchForm = searchFormSchemas && searchFormSchemas.length > 0
+
+  const handleTableChange: TableProps<R>['onChange'] = (pagination, _, sorter) => {
+    if (Array.isArray(sorter)) {
+      // TODO:
+      logger.warn('表格组件暂不支持多字段排序')
+      return
+    }
+
+    run({
+      pageNo: pagination.current,
+      pageSize: pagination.pageSize,
+      sortField: sorter.field,
+      sortOrder: sorter.order === 'ascend' ? 'asc' : 'desc',
+    })
+  }
 
   return (
     <>
       {showSearchForm && (
         <SearchForm
           schemas={searchFormSchemas}
-          formProps={searchFormProps}
+          formProps={{
+            onPressEnter: run,
+            ...searchFormProps,
+          }}
         />
       )}
 
-      <div className="bg-white dark:bg-dark-bg p-2">
-        <div className="flex justify-between items-center mb-2">
-          <h1>Table</h1>
+      <Card size="small">
+        <div className="flex justify-between items-center mb-3">
+          <h1>{title}</h1>
           <div>
             {toolbarActions}
             {toolbarActions && <Divider type="vertical" />}
 
-            <ColumnsSetting
-              showIndexColumn={finalShowIndex}
-              onShowIndexColumnChange={show => setInternalShowIndex(show)}
-              columns={columns}
-              onChange={cols => setAntColumns(genAntColumns(cols, finalShowIndex))}
-            />
+            <Space>
+              <Button type="text" icon={<ReloadOutlined />} />
+              <ColumnsSetting
+                showIndexColumn={finalShowIndex}
+                onShowIndexColumnChange={setInternalShowIndex}
+                columns={columns}
+                onChange={cols => setAntColumns(getAntColumns(cols, finalShowIndex))}
+              />
+            </Space>
           </div>
         </div>
 
-        <AntTable
+        <AntTable<R>
+          pagination={pagination ? { total } : false}
+
           size={size}
+          loading={loading}
           rowKey={rowKey}
           bordered={bordered}
           columns={antColumns}
           dataSource={tableData}
+          onChange={handleTableChange}
         />
-      </div>
+      </Card>
+
     </>
 
   )
-})
+}
 
-Table.displayName = 'Table'
-
-export default Table
+export default memo(Table) as typeof Table

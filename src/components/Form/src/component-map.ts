@@ -55,6 +55,17 @@ const clearableComponents: ComponentType[] = [
   'Select',
 ]
 
+const enterableComponents: ComponentType[] = [
+  'Input',
+  'InputPassword',
+  'InputSearch',
+  'InputTextArea',
+]
+
 export function isClearable(component: ComponentType) {
   return clearableComponents.includes(component)
+}
+
+export function isEnterable(component: ComponentType) {
+  return enterableComponents.includes(component)
 }

@@ -1,11 +1,12 @@
 import { SettingOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Popover } from 'antd'
+import { memo } from 'react'
 
 import type { ColumnsSettingProps } from '../types'
 
 import ColumnItem from './ColumnItem'
 
-export default function ColumnsSetting(props: ColumnsSettingProps) {
+const ColumnsSetting = memo((props: ColumnsSettingProps) => {
   const { columns, onChange, showIndexColumn, onShowIndexColumnChange } = props
 
   const titleNode = (
@@ -30,7 +31,7 @@ export default function ColumnsSetting(props: ColumnsSettingProps) {
         } = col
 
         return (
-          <li key={col.key || col.dataIndex}>
+          <li key={col.key || String(col.dataIndex)}>
             <ColumnItem
               title={col.title}
               state={{ show, pinnedLeft, pinnedRight }}
@@ -57,4 +58,8 @@ export default function ColumnsSetting(props: ColumnsSettingProps) {
       <Button title="列设置" type="text" icon={<SettingOutlined />}></Button>
     </Popover>
   )
-}
+})
+
+ColumnsSetting.displayName = 'ColumnsSetting'
+
+export default ColumnsSetting

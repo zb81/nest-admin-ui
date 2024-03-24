@@ -1,3 +1,4 @@
+import { Card } from 'antd'
 import { memo } from 'react'
 
 import type { FormProps, FormSchema } from '@/components/Form'
@@ -12,13 +13,14 @@ const SearchForm = memo(({ schemas, formProps }: Props) => {
   const { form } = useForm()
 
   return (
-    <Form
-      form={form}
-      className="bg-white dark:bg-dark-bg p-2 mb-3"
-      schemas={schemas}
-      searchMode
-      {...formProps}
-    />
+    <Card className="mb-3" size="small">
+      <Form
+        form={form}
+        schemas={schemas}
+        searchMode
+        {...formProps}
+      />
+    </Card>
   )
 })
 

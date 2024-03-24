@@ -17,8 +17,14 @@ export default function Role() {
   const columns: ColumnProps<RoleVo>[] = [
     { show: true, dataIndex: 'name', title: '角色名称' },
     { show: true, dataIndex: 'value', title: '角色标识' },
-    { show: true, dataIndex: 'status', title: '状态' },
-    { show: true, dataIndex: 'createdAt', title: '创建时间', render: v => formatDateTimeString(v) },
+    { show: true, dataIndex: 'status', title: '状态', sortable: true },
+    {
+      show: true,
+      dataIndex: 'createdAt',
+      sortable: true,
+      title: '创建时间',
+      render: v => formatDateTimeString(v),
+    },
     { show: true, dataIndex: 'remark', key: 'remark', title: '备注' },
   ]
 
@@ -68,7 +74,8 @@ export default function Role() {
 
   return (
     <AnimatedRoute>
-      <Table
+      <Table<RoleVo>
+        title="角色列表"
         api={getRoleList}
         columns={columns}
         searchFormSchemas={searchFormSchemas}

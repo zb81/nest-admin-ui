@@ -1,12 +1,7 @@
-export interface ColumnProps<Record = any> {
-  title: RN
-  dataIndex: Extract<keyof Record, string>
-  key?: string
+import type { TableColumnType } from 'antd'
 
-  /** @default 'center' */
-  align?: 'left' | 'right' | 'center'
-
-  render?: (text: any, record: any, index: number) => RN
+export interface ColumnProps<R extends object> extends TableColumnType<R> {
+  title?: RN
 
   /** @default true */
   show?: boolean
@@ -18,7 +13,4 @@ export interface ColumnProps<Record = any> {
   pinnedRight?: boolean
 
   order?: number
-
-  /** @default false */
-  sortable?: boolean
 }

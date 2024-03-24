@@ -13,6 +13,7 @@ export interface FormProps<V = any> {
   allowClear?: boolean
   /** 回车提交 @default false */
   submitOnEnter?: boolean
+  onPressEnter?: () => void
 
   // 以下为 antd form 属性
   // 参考 https://ant-design.antgroup.com/components/form-cn#form

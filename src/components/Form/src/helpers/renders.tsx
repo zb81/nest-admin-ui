@@ -1,6 +1,6 @@
 import { isFunction } from 'lodash-es'
 
-import { componentMap, isClearable } from '../component-map'
+import { componentMap, isClearable, isEnterable } from '../component-map'
 import type { FormSchema, InputUnitProps } from '../types'
 
 export function FormItemLabel<V = any>(props: { schema: FormSchema<V>, values: V }) {
@@ -13,7 +13,13 @@ export function FormItemLabel<V = any>(props: { schema: FormSchema<V>, values: V
 }
 
 export function InputUnit(props: { schema: FormSchema } & InputUnitProps) {
-  const { value, onChange, schema, allowClear = true } = props
+  const {
+    value,
+    schema,
+    allowClear = true,
+    onChange,
+    onPressEnter,
+  } = props
   const { component, componentProps, render } = schema
 
   // component 为空，或者用户传入 render
@@ -32,8 +38,6 @@ export function InputUnit(props: { schema: FormSchema } & InputUnitProps) {
   if (component.includes('Select') || component.includes('Picker'))
     placeholderProps.placeholder = '请选择'
 
-  const clearable = isClearable(component)
-
   return (
     <InputComponent
       className="w-full"
@@ -42,7 +46,8 @@ export function InputUnit(props: { schema: FormSchema } & InputUnitProps) {
       //   console.log('enter...')
       // }}
       onChange={onChange}
-      {...(clearable ? { allowClear } : {})}
+      {...(isClearable(component) ? { allowClear } : {})}
+      {...(isEnterable(component) ? { onPressEnter } : {})}
       {...componentProps}
       {...placeholderProps}
     />
