@@ -1,6 +1,8 @@
 import { Button, message } from 'antd'
+import { produce } from 'immer'
 import { isNumber } from 'lodash-es'
 
+import { getMenuTree } from '@/apis/system/menu'
 import type { RoleDto, RoleVo } from '@/apis/system/role'
 import { createRole, getRoleList, updateRole } from '@/apis/system/role'
 import { BasicDrawer, useDrawer } from '@/components/Drawer'
@@ -14,19 +16,6 @@ import { formatDateTimeString } from '@/utils/date-time'
 import { formInitialValues, formSchemas, searchFormSchemas } from './role.config'
 
 export default function Role() {
-  const columns: ColumnProps<RoleVo>[] = [
-    { dataIndex: 'name', title: '角色名称' },
-    { dataIndex: 'value', title: '角色标识' },
-    { dataIndex: 'status', title: '状态' },
-    {
-      dataIndex: 'createdAt',
-      sorter: true,
-      title: '创建时间',
-      render: v => formatDateTimeString(v),
-    },
-    { dataIndex: 'remark', key: 'remark', title: '备注' },
-  ]
-
   const {
     open,
     openDrawer,
@@ -36,7 +25,7 @@ export default function Role() {
     stopConfirmLoading,
   } = useDrawer()
 
-  const formRef = useRef<FormInstance>(null)
+  const formRef = useRef<FormInstance<RoleDto>>(null)
   const tableRef = useRef<TableInstance>(null)
   const [initialValues, setInitialValues] = useState<RoleDto>(formInitialValues)
   const updateId = useRef<number>()
@@ -45,16 +34,16 @@ export default function Role() {
     updateId.current = undefined
     setInitialValues(formInitialValues)
     closeDrawer()
-    formRef.current?.resetFields()
+    formRef.current!.resetFields()
   }
 
   async function handleConfirm() {
     try {
-      await formRef.current?.validateFields()
+      await formRef.current!.validateFields()
       startConfirmLoading()
       const saveApi = isNumber(updateId.current) ? updateRole : createRole
       const [_, err] = await saveApi({
-        ...formRef.current?.getFieldsValue(),
+        ...formRef.current!.getFieldsValue(),
         id: updateId.current,
       })
       if (!err) {
@@ -71,7 +60,43 @@ export default function Role() {
     }
   }
 
-  const toolbarNode = <Button type="primary" onClick={openDrawer}>新增角色</Button>
+  const columns: ColumnProps<RoleVo>[] = [
+    { dataIndex: 'name', title: '角色名称' },
+    { dataIndex: 'value', title: '角色标识' },
+    { dataIndex: 'status', title: '状态' },
+    {
+      dataIndex: 'createdAt',
+      sorter: true,
+      title: '创建时间',
+      render: v => formatDateTimeString(v),
+    },
+    { dataIndex: 'remark', key: 'remark', title: '备注' },
+  ]
+
+  const { run: getTree } = useRequest(getMenuTree, {
+    manual: true,
+    onSuccess([res, err]) {
+      if (!err) {
+        formRef.current?.updateSchema('menuIds', (prev) => {
+          return produce(prev, (draft) => {
+            draft.componentProps!.treeData = res
+          })
+        })
+      }
+    },
+  })
+
+  const toolbarNode = (
+    <Button
+      type="primary"
+      onClick={() => {
+        openDrawer()
+        getTree()
+      }}
+    >
+      新增角色
+    </Button>
+  )
 
   return (
     <AnimatedRoute>

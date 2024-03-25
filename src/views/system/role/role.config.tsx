@@ -70,6 +70,9 @@ export const formSchemas: FormSchema<RoleDto>[] = [
     component: 'TreeSelect',
     componentProps: {
       treeCheckable: true,
+      treeData: [],
+      fieldNames: { label: 'name', value: 'id' },
+      getPopupContainer: () => document.body,
     },
   },
 ]

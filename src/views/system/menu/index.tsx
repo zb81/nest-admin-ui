@@ -131,6 +131,7 @@ export default function Menu() {
   ]
 
   const { run: getTree } = useRequest(getMenuTree, {
+    manual: true,
     onSuccess([res, err]) {
       if (!err) {
         formRef.current?.updateSchema('parentId', (prev) => {

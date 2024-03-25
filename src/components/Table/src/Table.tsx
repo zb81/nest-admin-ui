@@ -1,6 +1,7 @@
 import { ReloadOutlined } from '@ant-design/icons'
-import { Table as AntTable, Button, Card, Divider, Space } from 'antd'
+import { Table as AntTable, Card, Divider, Space } from 'antd'
 
+import { TipButton } from '@/components/Button'
 import { Form, type FormInstance } from '@/components/Form'
 import { logger } from '@/utils/logger'
 
@@ -111,7 +112,7 @@ const Table = forwardRef<TableInstance, TableProps>((props, ref) => {
             {toolbarActions && <Divider type="vertical" />}
 
             <Space>
-              <Button type="text" icon={<ReloadOutlined />} />
+              <TipButton title="刷新" icon={<ReloadOutlined />} onClick={run} />
               <ColumnsSetting
                 showIndexColumn={finalShowIndex}
                 onShowIndexColumnChange={setInternalShowIndex}
