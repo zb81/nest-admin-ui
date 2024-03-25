@@ -7,7 +7,7 @@ import { getCaptchaImg, login } from '@/apis/auth'
 import { VariantsContainer, VariantsItemRight } from '@/components/Motion'
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants/storage-keys'
 import { itemRightVariants } from '@/constants/variants'
-import { MenusContext } from '@/contexts/MenusContext'
+import { MenusContext } from '@/contexts'
 import { setDynamicRoutes } from '@/router'
 import { localCache } from '@/utils/cache'
 

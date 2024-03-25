@@ -1,6 +1,6 @@
 import type { TableColumnType } from 'antd'
 
-export interface ColumnProps<R extends object> extends TableColumnType<R> {
+export interface ColumnProps<R = any> extends TableColumnType<R> {
   title?: RN
 
   /** @default true */

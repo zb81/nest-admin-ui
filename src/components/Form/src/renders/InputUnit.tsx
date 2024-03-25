@@ -1,8 +1,7 @@
 import { isFunction } from 'lodash-es'
 
 import { componentMap, isClearable, isEnterable } from '../component-map'
-import { FormPropsContext } from '../contexts/FormPropsContext'
-import { SchemaContext } from '../contexts/SchemaContext'
+import { FormPropsContext, SchemaContext } from '../contexts'
 
 interface Props {
   value?: any
@@ -40,7 +39,7 @@ function InputUnit(props: Props) {
       // }}
       onChange={onChange}
       {...(isClearable(component) ? { allowClear: formProps.allowClear } : {})}
-      {...(isEnterable(component) ? { onPressEnter: formProps.onPressEnter } : {})}
+      {...(isEnterable(component) ? { onPressEnter: formProps.onSubmit } : {})}
       {...componentProps}
       {...placeholderProps}
     />

@@ -2,13 +2,11 @@ import { Form as AntForm, Row } from 'antd'
 import { merge } from 'lodash-es'
 
 import FormItem from './FormItem'
-import { FormPropsProvider } from './contexts/FormPropsContext'
-import { SchemaProvider } from './contexts/SchemaContext'
-import { ValuesProvider } from './contexts/ValuesContext'
+import { FormPropsProvider, InstanceProvider, SchemaProvider, ValuesProvider } from './contexts'
 import { defaultFormProps } from './props'
-import type { FormProps } from './types'
+import type { FormInstance, FormProps } from './types'
 
-function Form<V = any>(props: FormProps<V>) {
+const Form = forwardRef<FormInstance, FormProps>((props, ref) => {
   props = merge({}, defaultFormProps, props)
 
   const {
@@ -19,30 +17,53 @@ function Form<V = any>(props: FormProps<V>) {
     labelWidth,
     colProps,
     submitOnEnter,
-    onPressEnter,
+    submitOnReset,
+    onSubmit: onPressEnter,
+    initialValues = {},
     ...otherProps
   } = props
 
-  const [values, setValues] = useState(otherProps.form?.getFieldsValue())
+  const [form] = AntForm.useForm()
+  const [internalSchemas, setInternalSchemas] = useState(schemas || [])
+
+  useImperativeHandle(ref, () => ({
+    ...form,
+    updateSchema: (field, replacer) => {
+      const idx = internalSchemas?.findIndex(schema => schema.field === field)
+      if (~idx) {
+        const s = internalSchemas[idx]
+        const newS = replacer(s)
+        const arr = [...internalSchemas]
+        arr.splice(idx, 1, newS)
+        setInternalSchemas(arr)
+      }
+    },
+  }))
+
+  const [values, setValues] = useState(initialValues)
 
   return (
     <AntForm
+      initialValues={initialValues}
       {...otherProps}
+      form={form}
       onValuesChange={(_, v) => setValues(v)}
     >
-      <FormPropsProvider formProps={props}>
-        <ValuesProvider values={values} setValues={setValues}>
-          <Row {...rowProps}>
-            {Array.isArray(schemas) && schemas.map(schema => (
-              <SchemaProvider key={schema.field || schema.key} schema={schema}>
-                <FormItem />
-              </SchemaProvider>
-            ))}
-          </Row>
-        </ValuesProvider>
-      </FormPropsProvider>
+      <InstanceProvider instance={form}>
+        <FormPropsProvider formProps={{ ...props }}>
+          <ValuesProvider values={values} setValues={setValues}>
+            <Row {...rowProps}>
+              {internalSchemas.map(schema => (
+                <SchemaProvider key={schema.field || schema.key} schema={schema}>
+                  <FormItem />
+                </SchemaProvider>
+              ))}
+            </Row>
+          </ValuesProvider>
+        </FormPropsProvider>
+      </InstanceProvider>
     </AntForm>
   )
-}
+})
 
 export default memo(Form) as typeof Form

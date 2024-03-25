@@ -6,7 +6,7 @@ import Logo from '@/components/Logo'
 import { VariantsContainer, VariantsItemLeft } from '@/components/Motion'
 import ToggleTheme from '@/components/ToggleTheme'
 import { itemLeftVariants } from '@/constants/variants'
-import { ColorModeContext } from '@/contexts/ThemeContext'
+import { ColorModeContext } from '@/contexts'
 import { isLoggedIn } from '@/utils/auth'
 import Loading from '@/views/fallbacks/Loading'
 

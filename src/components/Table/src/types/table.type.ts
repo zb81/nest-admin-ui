@@ -6,7 +6,7 @@ import type { ColumnProps } from './column.type'
 
 type Res<R> = R[] | PaginationResWrapper<R>
 
-export interface TableProps<R extends object> {
+export interface TableProps<R = any> {
   title?: RN
   columns: ColumnProps<R>[]
   /** 列表查询接口 */
@@ -29,14 +29,14 @@ export interface TableProps<R extends object> {
   rowActions?: RN
 
   /** 是否开启分页功能 @default true */
-  pagination?: boolean
+  enablePagination?: boolean
 
   onChange?: AntTableProps['onChange']
 }
 
-export interface TableInstance<R = any> {
-  getSelectedRow: () => R[]
-  getSelectedRowKeys: () => React.Key[]
-  clearSelectedRow: () => void
-  reload: () => Promise<void>
+export interface TableInstance {
+  // getSelectedRow: () => R[]
+  // getSelectedRowKeys: () => React.Key[]
+  // clearSelectedRow: () => void
+  reload: (() => Promise<void>) | (() => void)
 }

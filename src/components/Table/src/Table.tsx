@@ -1,14 +1,14 @@
 import { ReloadOutlined } from '@ant-design/icons'
 import { Table as AntTable, Button, Card, Divider, Space } from 'antd'
 
+import { Form, type FormInstance } from '@/components/Form'
 import { logger } from '@/utils/logger'
 
-import SearchForm from './SearchForm'
 import { getAntColumns } from './helpers'
 import ColumnsSetting from './settings/ColumnsSetting'
-import type { TableProps } from './types'
+import type { TableInstance, TableProps } from './types'
 
-function Table<R extends object>(props: TableProps<R>) {
+const Table = forwardRef<TableInstance, TableProps>((props, ref) => {
   const {
     title,
     columns,
@@ -16,62 +16,92 @@ function Table<R extends object>(props: TableProps<R>) {
     rowKey = 'id',
     showIndexColumn = true,
     size = 'middle',
-    pagination = true,
+    enablePagination = true,
     bordered = true,
     toolbarActions,
     searchFormSchemas,
     searchFormProps,
   } = props
 
-  const [tableData, setTableData] = useState<R[]>([])
+  const [tableData, setTableData] = useState<any[]>([])
   const [internalShowIndex, setInternalShowIndex] = useState(true)
+  const [pageNo, setPageNo] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
   const [total, setTotal] = useState(0)
+  const [sortParams, setSortParams] = useState<SortDto>()
 
   const finalShowIndex = showIndexColumn && internalShowIndex
+  const formRef = useRef<FormInstance>(null)
 
-  const { loading, run } = useRequest(api, {
-    onSuccess: ([data, err]) => {
-      if (!err) {
-        if (Array.isArray(data)) {
-          setTableData(data)
+  const { loading, run } = useRequest(
+    () => api({
+      pageNo,
+      pageSize,
+      ...sortParams,
+      ...formRef.current?.getFieldsValue(),
+    }),
+    {
+      refreshDeps: [pageNo, pageSize, sortParams],
+      onSuccess: ([data, err]) => {
+        if (!err) {
+          if (Array.isArray(data)) {
+            setTableData(data)
+          }
+          else {
+            setTableData(data.list)
+            setTotal(data.total)
+          }
         }
-        else {
-          setTableData(data.list)
-          setTotal(data.total)
-        }
-      }
+      },
     },
-  })
+  )
 
   const [antColumns, setAntColumns] = useState(getAntColumns(columns, finalShowIndex))
 
   const showSearchForm = searchFormSchemas && searchFormSchemas.length > 0
 
-  const handleTableChange: TableProps<R>['onChange'] = (pagination, _, sorter) => {
+  const handleTableChange: TableProps['onChange'] = (pagination, _, sorter) => {
     if (Array.isArray(sorter)) {
       // TODO:
       logger.warn('表格组件暂不支持多字段排序')
       return
     }
 
-    run({
-      pageNo: pagination.current,
-      pageSize: pagination.pageSize,
-      sortField: sorter.field,
-      sortOrder: sorter.order === 'ascend' ? 'asc' : 'desc',
-    })
+    setPageNo(pagination.current || 1)
+    setPageSize(pagination.pageSize || 10)
+    if (sorter.field && sorter.order) {
+      setSortParams({
+        sortField: sorter.field as string,
+        sortOrder: sorter.order === 'ascend' ? 'asc' : 'desc',
+      })
+    }
+    else {
+      setSortParams(undefined)
+    }
   }
+
+  useImperativeHandle(ref, () => ({
+    reload: run,
+    // getSelectedRow: () => {},
+  }))
 
   return (
     <>
       {showSearchForm && (
-        <SearchForm
-          schemas={searchFormSchemas}
-          formProps={{
-            onPressEnter: run,
-            ...searchFormProps,
-          }}
-        />
+        <Card className="mb-3" size="small">
+          <Form
+            ref={formRef}
+            schemas={searchFormSchemas}
+            searchMode
+            {...searchFormProps}
+            submitOnReset
+            submitOnEnter
+            onSubmit={() => {
+              setPageNo(1)
+              run()
+            }}
+          />
+        </Card>
       )}
 
       <Card size="small">
@@ -93,9 +123,8 @@ function Table<R extends object>(props: TableProps<R>) {
           </div>
         </div>
 
-        <AntTable<R>
-          pagination={pagination ? { total } : false}
-
+        <AntTable
+          pagination={enablePagination && { current: pageNo, total, pageSize }}
           size={size}
           loading={loading}
           rowKey={rowKey}
@@ -105,10 +134,8 @@ function Table<R extends object>(props: TableProps<R>) {
           onChange={handleTableChange}
         />
       </Card>
-
     </>
-
   )
-}
+})
 
 export default memo(Table) as typeof Table

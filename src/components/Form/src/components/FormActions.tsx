@@ -1,10 +1,9 @@
-import type { FormInstance } from 'antd'
 import { Button, Space } from 'antd'
 import type { ButtonType } from 'antd/es/button'
 
-interface Props {
-  form: FormInstance
+import { FormPropsContext, InstanceContext } from '../contexts'
 
+interface Props {
   /** 取消按钮文本 @default '重置' */
   cancelText?: string
   /** 确认按钮文本 @default '提交' */
@@ -18,20 +17,26 @@ interface Props {
 
 function FormActions(props: Props) {
   const {
-    // form,
     cancelText = '重置',
     confirmText = '确认',
     cancelType = 'default',
     confirmType = 'primary',
   } = props
 
-  // if (!form)
-  //   logger.warn('FormActions 组件需要配合 form 组件使用')
+  const { formProps } = useContext(FormPropsContext)
+  const { submitOnReset, onSubmit } = formProps
+  const { instance } = useContext(InstanceContext)
+
+  function handleReset() {
+    instance?.resetFields()
+    if (submitOnReset)
+      onSubmit?.()
+  }
 
   return (
     <Space>
-      <Button type={cancelType}>{cancelText}</Button>
-      <Button type={confirmType}>{confirmText}</Button>
+      <Button type={cancelType} onClick={handleReset}>{cancelText}</Button>
+      <Button type={confirmType} onClick={onSubmit}>{confirmText}</Button>
     </Space>
   )
 }

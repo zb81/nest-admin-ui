@@ -24,7 +24,7 @@ export interface FormSchema<V = any> {
   /** 需要渲染的组件名称，在 `componentMap` 中定义 */
   component?: ComponentType
   /** 需要渲染的组件属性 */
-  componentProps?: object
+  componentProps?: any
   /** FormItem 组件的属性 */
   formItemProps?: Partial<FormItemProps>
   /** 控制整个 FormItem 的 Col */

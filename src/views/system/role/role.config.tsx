@@ -1,8 +1,5 @@
-import type { TableColumnsType } from 'antd'
-
 import type { RoleDto, RoleVo } from '@/apis/system/role'
 import type { FormSchema } from '@/components/Form'
-import { formatDateTimeString } from '@/utils/date-time'
 
 export const formInitialValues: RoleDto = {
   name: '',
@@ -11,36 +8,6 @@ export const formInitialValues: RoleDto = {
   remark: '',
   menuIds: [],
 } as const
-
-export function genColumns(optRender: (record: RoleVo) => RN): TableColumnsType<RoleVo> {
-  return [
-    { title: '角色名称', dataIndex: 'name' },
-    { title: '角色标识', dataIndex: 'value', align: 'center' },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      align: 'center',
-      width: 80,
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createdAt',
-      align: 'center',
-      width: 180,
-      render: v => formatDateTimeString(v),
-    },
-    { title: '备注', dataIndex: 'remark', align: 'center' },
-    {
-      title: '操作',
-      key: 'options',
-      align: 'center',
-      width: 80,
-      render(_, record) {
-        return optRender(record)
-      },
-    },
-  ]
-}
 
 export const searchFormSchemas: FormSchema<RoleVo>[] = [
   {

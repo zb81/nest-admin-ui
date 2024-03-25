@@ -1,9 +1,7 @@
 import { Form as AntForm, Col } from 'antd'
 import classNames from 'classnames'
 
-import { FormPropsContext } from './contexts/FormPropsContext'
-import { SchemaContext } from './contexts/SchemaContext'
-import { ValuesContext } from './contexts/ValuesContext'
+import { FormPropsContext, SchemaContext, ValuesContext } from './contexts'
 import { getFormItemCol, getLabelCol, getRequired, getRules, getShow } from './helper'
 import InputUnit from './renders/InputUnit'
 import Label from './renders/Label'

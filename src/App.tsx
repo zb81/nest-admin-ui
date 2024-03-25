@@ -4,8 +4,7 @@ import zhCN from 'antd/locale/zh_CN'
 import { RouterProvider } from 'react-router-dom'
 
 import { type AccountMenuVo, getAccountMenus } from '@/apis/account'
-import { MenusProvider } from '@/contexts/MenusContext'
-import { ColorModeContext, ThemeColorContext } from '@/contexts/ThemeContext'
+import { ColorModeProvider, MenusProvider, ThemeColorProvider } from '@/contexts'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useDark } from '@/hooks/useDark'
 import { usePrimaryColor } from '@/hooks/usePrimaryColor'
@@ -61,13 +60,13 @@ export default function App() {
 
   return (
     <ConfigProvider locale={zhCN} theme={antdTheme} wave={{ disabled: true }}>
-      <ColorModeContext.Provider value={{ mode, setMode }}>
-        <ThemeColorContext.Provider value={{ color: primaryColor, setColor: setPrimaryColor }}>
+      <ColorModeProvider mode={mode} setMode={setMode}>
+        <ThemeColorProvider color={primaryColor} setColor={setPrimaryColor}>
           <MenusProvider menus={menus} setMenus={setMenus}>
             <RouterProvider router={router} />
           </MenusProvider>
-        </ThemeColorContext.Provider>
-      </ColorModeContext.Provider>
+        </ThemeColorProvider>
+      </ColorModeProvider>
     </ConfigProvider>
   )
 }

@@ -1,7 +1,6 @@
 import { isFunction } from 'lodash-es'
 
-import { SchemaContext } from '../contexts/SchemaContext'
-import { ValuesContext } from '../contexts/ValuesContext'
+import { SchemaContext, ValuesContext } from '../contexts'
 
 function Label() {
   const { schema } = useContext(SchemaContext)

@@ -4,9 +4,10 @@ import { isNumber } from 'lodash-es'
 import type { RoleDto, RoleVo } from '@/apis/system/role'
 import { createRole, getRoleList, updateRole } from '@/apis/system/role'
 import { BasicDrawer, useDrawer } from '@/components/Drawer'
-import { Form, useForm } from '@/components/Form'
+import type { FormInstance } from '@/components/Form'
+import { Form } from '@/components/Form'
 import { AnimatedRoute } from '@/components/Motion'
-import type { ColumnProps } from '@/components/Table'
+import type { ColumnProps, TableInstance } from '@/components/Table'
 import { Table } from '@/components/Table'
 import { formatDateTimeString } from '@/utils/date-time'
 
@@ -14,17 +15,16 @@ import { formInitialValues, formSchemas, searchFormSchemas } from './role.config
 
 export default function Role() {
   const columns: ColumnProps<RoleVo>[] = [
-    { show: true, dataIndex: 'name', title: '角色名称' },
-    { show: true, dataIndex: 'value', title: '角色标识' },
-    { show: true, dataIndex: 'status', title: '状态', sorter: true },
+    { dataIndex: 'name', title: '角色名称' },
+    { dataIndex: 'value', title: '角色标识' },
+    { dataIndex: 'status', title: '状态' },
     {
-      show: true,
       dataIndex: 'createdAt',
       sorter: true,
       title: '创建时间',
       render: v => formatDateTimeString(v),
     },
-    { show: true, dataIndex: 'remark', key: 'remark', title: '备注' },
+    { dataIndex: 'remark', key: 'remark', title: '备注' },
   ]
 
   const {
@@ -36,7 +36,8 @@ export default function Role() {
     stopConfirmLoading,
   } = useDrawer()
 
-  const { form } = useForm<RoleDto>()
+  const formRef = useRef<FormInstance>(null)
+  const tableRef = useRef<TableInstance>(null)
   const [initialValues, setInitialValues] = useState<RoleDto>(formInitialValues)
   const updateId = useRef<number>()
 
@@ -44,21 +45,22 @@ export default function Role() {
     updateId.current = undefined
     setInitialValues(formInitialValues)
     closeDrawer()
-    form.resetFields()
+    formRef.current?.resetFields()
   }
 
   async function handleConfirm() {
     try {
-      await form.validateFields()
+      await formRef.current?.validateFields()
       startConfirmLoading()
       const saveApi = isNumber(updateId.current) ? updateRole : createRole
       const [_, err] = await saveApi({
-        ...form.getFieldsValue(),
+        ...formRef.current?.getFieldsValue(),
         id: updateId.current,
       })
       if (!err) {
         message.success('保存成功')
         closeMenuDrawer()
+        tableRef.current?.reload()
       }
     }
     catch (e) {
@@ -73,7 +75,8 @@ export default function Role() {
 
   return (
     <AnimatedRoute>
-      <Table<RoleVo>
+      <Table
+        ref={tableRef}
         title="角色列表"
         api={getRoleList}
         columns={columns}
@@ -94,7 +97,7 @@ export default function Role() {
         onConfirm={handleConfirm}
       >
         <Form
-          form={form}
+          ref={formRef}
           schemas={formSchemas}
           initialValues={initialValues}
           labelAlign="right"

@@ -1,7 +1,7 @@
 import { MoonOutlined, SunOutlined } from '@ant-design/icons'
 
 import ToggleTheme from '@/components/ToggleTheme'
-import { ColorModeContext } from '@/contexts/ThemeContext'
+import { ColorModeContext } from '@/contexts'
 import { useDark } from '@/hooks/useDark'
 
 function HeaderRight() {
