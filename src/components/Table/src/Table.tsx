@@ -1,7 +1,5 @@
 import { ReloadOutlined } from '@ant-design/icons'
-import { useRequest } from 'ahooks'
 import { Table as AntTable, Button, Card, Divider, Space } from 'antd'
-import { memo, useState } from 'react'
 
 import { logger } from '@/utils/logger'
 

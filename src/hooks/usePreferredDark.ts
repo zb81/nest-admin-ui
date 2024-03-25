@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-
 import { logger } from '@/utils/logger'
 
 const isSupported = window && 'matchMedia' in window && typeof window.matchMedia === 'function'

@@ -1,6 +1,3 @@
-import { useLocalStorageState } from 'ahooks'
-import { useEffect } from 'react'
-
 import { PRIMARY_COLOR_KEY } from '@/constants/storage-keys'
 
 export function usePrimaryColor() {

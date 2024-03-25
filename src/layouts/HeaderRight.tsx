@@ -1,5 +1,4 @@
 import { MoonOutlined, SunOutlined } from '@ant-design/icons'
-import { useContext } from 'react'
 
 import ToggleTheme from '@/components/ToggleTheme'
 import { ColorModeContext } from '@/contexts/ThemeContext'

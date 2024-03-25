@@ -1,5 +1,3 @@
-import { useLocalStorageState } from 'ahooks'
-
 import type { ColorMode } from '@/components/ToggleTheme'
 import { COLOR_MODE_KEY } from '@/constants/storage-keys'
 

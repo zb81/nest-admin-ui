@@ -1,5 +1,3 @@
-import { useCountDown, useLocalStorageState } from 'ahooks'
-
 const EMAIL_CODE_COUNTDOWN = 'nest-admin-email-code-countdown'
 
 export function useEmailCountdown(interval = 60 * 1000) {

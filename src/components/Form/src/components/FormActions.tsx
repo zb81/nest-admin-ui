@@ -1,7 +1,6 @@
 import type { FormInstance } from 'antd'
 import { Button, Space } from 'antd'
 import type { ButtonType } from 'antd/es/button'
-import { memo } from 'react'
 
 interface Props {
   form: FormInstance

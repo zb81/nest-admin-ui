@@ -1,8 +1,6 @@
 import { EditOutlined } from '@ant-design/icons'
-import { useRequest } from 'ahooks'
 import { Button, Table, message } from 'antd'
 import { isNumber } from 'lodash-es'
-import { useRef, useState } from 'react'
 
 import { createMenu, deleteMenu, getMenuTree, updateMenu } from '@/apis/system/menu'
 import type { MenuDto, MenuTreeVo } from '@/apis/system/menu'

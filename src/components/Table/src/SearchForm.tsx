@@ -1,5 +1,4 @@
 import { Card } from 'antd'
-import { memo } from 'react'
 
 import type { FormProps, FormSchema } from '@/components/Form'
 import { Form, useForm } from '@/components/Form'

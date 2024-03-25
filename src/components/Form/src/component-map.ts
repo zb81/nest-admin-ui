@@ -1,5 +1,4 @@
 import { Cascader, Checkbox, DatePicker, Divider, Input, InputNumber, Radio, Rate, Select, Switch, Transfer, TreeSelect } from 'antd'
-import type React from 'react'
 
 import { BasicTitle } from '@/components/Basic'
 import { IconPicker } from '@/components/Icon'

@@ -1,6 +1,5 @@
 import { SettingOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Popover } from 'antd'
-import { memo } from 'react'
 
 import type { ColumnsSettingProps } from '../types'
 

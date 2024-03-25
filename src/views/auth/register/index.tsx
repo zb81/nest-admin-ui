@@ -1,7 +1,5 @@
-import { useRequest } from 'ahooks'
 import { Button, Col, Form, Input, Row, Space, message } from 'antd'
 import { motion } from 'framer-motion'
-import { Link, useNavigate } from 'react-router-dom'
 
 import { checkUsername, register, sendRegisterEmailCode } from '@/apis/auth'
 import { VariantsContainer, VariantsItemRight } from '@/components/Motion'

@@ -1,5 +1,4 @@
 import * as AntdIcons from '@ant-design/icons'
-import React from 'react'
 
 import { camelCaseToKebabCase, kebabCaseToCamelCase } from '@/utils/string'
 

@@ -1,4 +1,9 @@
 {
+  "search.exclude": {
+    "**/node_modules": true,
+    "*-lock.*": true
+  },
+
   // Enable the ESlint flat config support
   "eslint.experimental.useFlatConfig": true,
 
@@ -50,7 +55,8 @@
     "nestjs",
     "Sider",
     "svgr",
-    "unocss"
+    "unocss",
+    "unplugin"
   ],
   "auto-close-tag.SublimeText3Mode": true
 }

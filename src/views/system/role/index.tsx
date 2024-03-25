@@ -1,6 +1,5 @@
 import { Button, message } from 'antd'
 import { isNumber } from 'lodash-es'
-import { useRef, useState } from 'react'
 
 import type { RoleDto, RoleVo } from '@/apis/system/role'
 import { createRole, getRoleList, updateRole } from '@/apis/system/role'
@@ -17,11 +16,11 @@ export default function Role() {
   const columns: ColumnProps<RoleVo>[] = [
     { show: true, dataIndex: 'name', title: '角色名称' },
     { show: true, dataIndex: 'value', title: '角色标识' },
-    { show: true, dataIndex: 'status', title: '状态', sortable: true },
+    { show: true, dataIndex: 'status', title: '状态', sorter: true },
     {
       show: true,
       dataIndex: 'createdAt',
-      sortable: true,
+      sorter: true,
       title: '创建时间',
       render: v => formatDateTimeString(v),
     },

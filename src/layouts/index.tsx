@@ -1,7 +1,6 @@
 import type { MenuProps } from 'antd'
 import { Layout, Menu } from 'antd'
-import { Suspense, useContext, useState } from 'react'
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Suspense } from 'react'
 
 import type { AccountMenuVo } from '@/apis/account'
 import CheckLoggedIn from '@/components/CheckLoggedIn'

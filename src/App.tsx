@@ -1,8 +1,6 @@
-import { useMount } from 'ahooks'
 import type { ThemeConfig } from 'antd'
 import { ConfigProvider, theme } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
 import { type AccountMenuVo, getAccountMenus } from '@/apis/account'

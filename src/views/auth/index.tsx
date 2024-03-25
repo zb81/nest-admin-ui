@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
-import { Suspense, useContext } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Suspense } from 'react'
 
 import loginBoxBg from '@/assets/svg/login-box-bg.svg'
 import Logo from '@/components/Logo'

@@ -1,6 +1,4 @@
-import type { ComponentType } from 'react'
-import { lazy } from 'react'
-import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
 import type { AccountMenuVo } from '@/apis/account'
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants/storage-keys'
@@ -53,7 +51,7 @@ export const router = createBrowserRouter([
 
 export const routeComponents = import.meta.glob('@/views/**/index.tsx') as Record<
   string,
-  () => Promise<{ default: ComponentType }>
+  () => Promise<{ default: React.ComponentType }>
 >
 
 function collectRoutes(menus: AccountMenuVo[], res: AccountMenuVo[] = []) {

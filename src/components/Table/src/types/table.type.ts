@@ -1,5 +1,4 @@
 import type { TableProps as AntTableProps } from 'antd'
-import type { Key } from 'react'
 
 import type { FormProps, FormSchema } from '@/components/Form'
 
@@ -37,7 +36,7 @@ export interface TableProps<R extends object> {
 
 export interface TableInstance<R = any> {
   getSelectedRow: () => R[]
-  getSelectedRowKeys: () => Key[]
+  getSelectedRowKeys: () => React.Key[]
   clearSelectedRow: () => void
   reload: () => Promise<void>
 }
