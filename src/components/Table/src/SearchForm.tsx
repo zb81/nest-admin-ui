@@ -8,7 +8,7 @@ interface Props {
   formProps?: FormProps
 }
 
-const SearchForm = memo(({ schemas, formProps }: Props) => {
+function SearchForm({ schemas, formProps }: Props) {
   const { form } = useForm()
 
   return (
@@ -21,8 +21,6 @@ const SearchForm = memo(({ schemas, formProps }: Props) => {
       />
     </Card>
   )
-})
+}
 
-SearchForm.displayName = 'SearchForm'
-
-export default SearchForm
+export default memo(SearchForm) as typeof SearchForm

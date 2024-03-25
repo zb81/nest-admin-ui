@@ -5,7 +5,7 @@ import type { ColumnsSettingProps } from '../types'
 
 import ColumnItem from './ColumnItem'
 
-const ColumnsSetting = memo((props: ColumnsSettingProps) => {
+function ColumnsSetting(props: ColumnsSettingProps) {
   const { columns, onChange, showIndexColumn, onShowIndexColumnChange } = props
 
   const titleNode = (
@@ -57,8 +57,6 @@ const ColumnsSetting = memo((props: ColumnsSettingProps) => {
       <Button title="列设置" type="text" icon={<SettingOutlined />}></Button>
     </Popover>
   )
-})
+}
 
-ColumnsSetting.displayName = 'ColumnsSetting'
-
-export default ColumnsSetting
+export default memo(ColumnsSetting) as typeof ColumnsSetting

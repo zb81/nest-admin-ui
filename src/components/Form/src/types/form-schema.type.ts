@@ -1,8 +1,7 @@
-import type { ColProps } from 'antd'
+import type { ColProps, FormItemProps } from 'antd'
 import type { Rule } from 'antd/es/form'
 
 import type { ComponentType } from './components.type'
-import type { FormItemProps } from './form-item.type'
 
 interface RenderParams<V> {
   values: V

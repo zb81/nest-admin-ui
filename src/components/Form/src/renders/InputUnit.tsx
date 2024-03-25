@@ -1,25 +1,18 @@
 import { isFunction } from 'lodash-es'
 
 import { componentMap, isClearable, isEnterable } from '../component-map'
-import type { FormSchema, InputUnitProps } from '../types'
+import { FormPropsContext } from '../contexts/FormPropsContext'
+import { SchemaContext } from '../contexts/SchemaContext'
 
-export function FormItemLabel<V = any>(props: { schema: FormSchema<V>, values: V }) {
-  const { schema, values } = props
-  const { label } = schema
-
-  const labelNode = isFunction(label) ? label({ field: schema.field, values }) : label
-
-  return <span>{labelNode}</span>
+interface Props {
+  value?: any
+  onChange?: (v: any) => void
 }
 
-export function InputUnit(props: { schema: FormSchema } & InputUnitProps) {
-  const {
-    value,
-    schema,
-    allowClear = true,
-    onChange,
-    onPressEnter,
-  } = props
+function InputUnit(props: Props) {
+  const { value, onChange } = props
+  const { schema } = useContext(SchemaContext)
+  const { formProps } = useContext(FormPropsContext)
   const { component, componentProps, render } = schema
 
   // component 为空，或者用户传入 render
@@ -46,10 +39,12 @@ export function InputUnit(props: { schema: FormSchema } & InputUnitProps) {
       //   console.log('enter...')
       // }}
       onChange={onChange}
-      {...(isClearable(component) ? { allowClear } : {})}
-      {...(isEnterable(component) ? { onPressEnter } : {})}
+      {...(isClearable(component) ? { allowClear: formProps.allowClear } : {})}
+      {...(isEnterable(component) ? { onPressEnter: formProps.onPressEnter } : {})}
       {...componentProps}
       {...placeholderProps}
     />
   )
 }
+
+export default memo(InputUnit) as typeof InputUnit

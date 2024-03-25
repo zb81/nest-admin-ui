@@ -11,3 +11,11 @@ export const MenusContext = createContext<Menus>({
   menus: [],
   setMenus: () => {},
 })
+
+export function MenusProvider({ menus, setMenus, children }: PWC<Menus>) {
+  return (
+    <MenusContext.Provider value={{ menus, setMenus }}>
+      {children}
+    </MenusContext.Provider>
+  )
+}

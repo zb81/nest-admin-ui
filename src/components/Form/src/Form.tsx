@@ -1,57 +1,48 @@
 import { Form as AntForm, Row } from 'antd'
-import classNames from 'classnames'
+import { merge } from 'lodash-es'
 
 import FormItem from './FormItem'
-import { FormItemLabel } from './helpers/renders'
+import { FormPropsProvider } from './contexts/FormPropsContext'
+import { SchemaProvider } from './contexts/SchemaContext'
+import { ValuesProvider } from './contexts/ValuesContext'
+import { defaultFormProps } from './props'
 import type { FormProps } from './types'
 
-export default function Form<V = any>(props: FormProps<V>) {
+function Form<V = any>(props: FormProps<V>) {
+  props = merge({}, defaultFormProps, props)
+
   const {
-    form,
-    schemas = [],
-    labelAlign = 'right',
-    rowProps = {},
-    colon = false,
-    layout = 'horizontal',
-    variant = 'outlined',
-    size = 'middle',
-    labelCol = {},
-    initialValues,
-    className,
-    searchMode = false,
-    allowClear = true,
+    schemas,
+    searchMode,
+    rowProps,
+    allowClear,
+    labelWidth,
+    colProps,
+    submitOnEnter,
+    onPressEnter,
+    ...otherProps
   } = props
 
-  const [values, setValues] = useState(initialValues as V)
+  const [values, setValues] = useState(otherProps.form?.getFieldsValue())
 
   return (
-    <AntForm<V>
-      className={className}
-      form={form}
-      variant={variant}
-      size={size}
-      colon={colon}
-      layout={layout}
-      labelAlign={labelAlign}
-      labelCol={labelCol}
-      initialValues={initialValues}
+    <AntForm
+      {...otherProps}
       onValuesChange={(_, v) => setValues(v)}
     >
-      <Row {...rowProps}>
-        {schemas.map(schema => (
-          <FormItem
-            allowClear={allowClear}
-            className={classNames({ 'mb-0': searchMode })}
-            key={schema.field || schema.key}
-            formProps={props}
-            values={values}
-            schema={schema}
-            field={schema.field}
-            label={<FormItemLabel schema={schema} values={values} />}
-            {...schema.formItemProps}
-          />
-        ))}
-      </Row>
+      <FormPropsProvider formProps={props}>
+        <ValuesProvider values={values} setValues={setValues}>
+          <Row {...rowProps}>
+            {Array.isArray(schemas) && schemas.map(schema => (
+              <SchemaProvider key={schema.field || schema.key} schema={schema}>
+                <FormItem />
+              </SchemaProvider>
+            ))}
+          </Row>
+        </ValuesProvider>
+      </FormPropsProvider>
     </AntForm>
   )
 }
+
+export default memo(Form) as typeof Form

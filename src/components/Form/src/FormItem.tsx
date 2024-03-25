@@ -1,41 +1,35 @@
 import { Form as AntForm, Col } from 'antd'
+import classNames from 'classnames'
 
-import { InputUnit } from '@/components/Form/src/helpers/renders'
+import { FormPropsContext } from './contexts/FormPropsContext'
+import { SchemaContext } from './contexts/SchemaContext'
+import { ValuesContext } from './contexts/ValuesContext'
+import { getFormItemCol, getLabelCol, getRequired, getRules, getShow } from './helper'
+import InputUnit from './renders/InputUnit'
+import Label from './renders/Label'
 
-import { getFormItemCol, getLabelCol, getRequired, getRules, getShow } from './helpers/getters'
-import type { FormItemProps } from './types/form-item.type'
-
-export default function FormItem(props: FormItemProps) {
-  const {
-    schema,
-    values,
-    formProps,
-    field,
-    label,
-    colon,
-    className,
-    allowClear = true,
-  } = props
+function FormItem() {
+  const { values } = useContext(ValuesContext)
+  const { formProps } = useContext(FormPropsContext)
+  const { schema } = useContext(SchemaContext)
 
   return (
     getShow(schema, values) && (
       <Col {...getFormItemCol(schema, formProps)}>
         <AntForm.Item
-          className={className}
-          name={field}
-          label={label}
-          colon={colon}
-          required={getRequired(schema, values)}
+          {...schema.formItemProps}
+          className={classNames({ 'mb-0': formProps.searchMode })}
           {...getLabelCol(schema, formProps)}
+          name={schema.field}
+          label={<Label />}
+          required={getRequired(schema, values)}
           rules={getRules(schema, values)}
         >
-          <InputUnit
-            onPressEnter={formProps.onPressEnter}
-            allowClear={allowClear}
-            schema={schema}
-          />
+          <InputUnit />
         </AntForm.Item>
       </Col>
     )
   )
 }
+
+export default memo(FormItem)

@@ -16,7 +16,7 @@ interface Props {
   confirmType?: ButtonType
 }
 
-const FormActions = memo((props: Props) => {
+function FormActions(props: Props) {
   const {
     // form,
     cancelText = '重置',
@@ -34,8 +34,6 @@ const FormActions = memo((props: Props) => {
       <Button type={confirmType}>{confirmText}</Button>
     </Space>
   )
-})
+}
 
-FormActions.displayName = 'FormActions'
-
-export default FormActions
+export default memo(FormActions) as typeof FormActions
