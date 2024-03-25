@@ -35,8 +35,7 @@ const Table = forwardRef<TableInstance, TableProps>((props, ref) => {
 
   const { loading, run } = useRequest(
     () => api({
-      pageNo,
-      pageSize,
+      ...(enablePagination ? { pageNo, pageSize } : undefined),
       ...sortParams,
       ...formRef.current?.getFieldsValue(),
     }),

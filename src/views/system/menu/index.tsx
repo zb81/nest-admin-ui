@@ -106,6 +106,7 @@ export default function Menu() {
       dataIndex: 'createdAt',
       align: 'center',
       width: 180,
+      sorter: true,
       render: v => formatDateTimeString(v),
     },
     {
@@ -159,6 +160,7 @@ export default function Menu() {
         ref={tableRef}
         title="菜单列表"
         api={getMenuTree}
+        enablePagination={false}
         showIndexColumn={false}
         columns={columns}
         searchFormSchemas={searchFormSchemas}
