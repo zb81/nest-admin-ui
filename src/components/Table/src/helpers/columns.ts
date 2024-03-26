@@ -1,13 +1,14 @@
 import type { TableColumnsType } from 'antd'
-import { isBoolean } from 'lodash-es'
 
 import type { ColumnProps } from '../types'
 
 export function getAntColumns<R extends object>(columns: ColumnProps<R>[], showIndexColumn: boolean) {
   const ret: TableColumnsType<R> = columns
-    .filter(col => (isBoolean(col.show) && col.show) || true)
     .map((col) => {
-      return { ...col }
+      return {
+        ...col,
+        fixed: col.pinnedLeft ? 'left' : col.pinnedRight ? 'right' : undefined,
+      }
     })
 
   if (showIndexColumn) {

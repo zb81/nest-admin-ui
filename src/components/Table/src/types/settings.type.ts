@@ -1,8 +1,8 @@
 import type { ColumnProps } from './column.type'
 
 export interface ColumnsSettingProps {
-  columns: ColumnProps<any>[]
+  columns: ColumnProps[]
   showIndexColumn: boolean
-  onChange: (columns: ColumnProps<any>[]) => void
+  onChange: (columns: ColumnProps[]) => void
   onShowIndexColumnChange: (show: boolean) => void
 }

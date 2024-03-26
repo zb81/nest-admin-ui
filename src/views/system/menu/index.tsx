@@ -14,6 +14,7 @@ import { Table } from '@/components/Table'
 import type { ColumnProps, TableInstance } from '@/components/Table'
 import { renderAntdIcon } from '@/utils/ant-design-icons'
 import { formatDateTimeString } from '@/utils/date-time'
+import { randomId } from '@/utils/random'
 
 import { formInitialValues, formSchemas, searchFormSchemas } from './menu.config'
 
@@ -77,8 +78,9 @@ export default function Menu() {
   }
 
   const columns: ColumnProps<MenuTreeVo>[] = [
-    { title: '菜单名称', dataIndex: 'name' },
+    { id: randomId(), title: '菜单名称', dataIndex: 'name' },
     {
+      id: randomId(),
       title: '图标',
       dataIndex: 'icon',
       width: 50,
@@ -87,10 +89,11 @@ export default function Menu() {
         return renderAntdIcon(v)
       },
     },
-    { title: '权限标识', dataIndex: 'permission', align: 'center' },
-    { title: '组件', dataIndex: 'component', align: 'center' },
-    { title: '排序', dataIndex: 'orderNo', align: 'center', width: 60 },
+    { id: randomId(), title: '权限标识', dataIndex: 'permission', align: 'center' },
+    { id: randomId(), title: '组件', dataIndex: 'component', align: 'center' },
+    { id: randomId(), title: '排序', dataIndex: 'orderNo', align: 'center', width: 60 },
     {
+      id: randomId(),
       title: '状态',
       dataIndex: 'status',
       align: 'center',
@@ -102,6 +105,7 @@ export default function Menu() {
       },
     },
     {
+      id: randomId(),
       title: '创建时间',
       dataIndex: 'createdAt',
       align: 'center',
@@ -110,6 +114,7 @@ export default function Menu() {
       render: v => formatDateTimeString(v),
     },
     {
+      id: randomId(),
       title: '操作',
       key: 'options',
       align: 'center',

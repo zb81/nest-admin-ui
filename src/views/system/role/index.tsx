@@ -13,6 +13,8 @@ import type { ColumnProps, TableInstance } from '@/components/Table'
 import { Table } from '@/components/Table'
 import { formatDateTimeString } from '@/utils/date-time'
 
+import { randomId } from '@/utils/random'
+
 import { formInitialValues, formSchemas, searchFormSchemas } from './role.config'
 
 export default function Role() {
@@ -61,16 +63,17 @@ export default function Role() {
   }
 
   const columns: ColumnProps<RoleVo>[] = [
-    { dataIndex: 'name', title: '角色名称' },
-    { dataIndex: 'value', title: '角色标识' },
-    { dataIndex: 'status', title: '状态' },
+    { id: randomId(), dataIndex: 'name', title: '角色名称' },
+    { id: randomId(), dataIndex: 'value', title: '角色标识' },
+    { id: randomId(), dataIndex: 'status', title: '状态' },
     {
+      id: randomId(),
       dataIndex: 'createdAt',
       sorter: true,
       title: '创建时间',
       render: v => formatDateTimeString(v),
     },
-    { dataIndex: 'remark', key: 'remark', title: '备注' },
+    { id: randomId(), dataIndex: 'remark', key: 'remark', title: '备注' },
   ]
 
   const { run: getTree } = useRequest(getMenuTree, {
@@ -105,6 +108,7 @@ export default function Role() {
         title="角色列表"
         api={getRoleList}
         columns={columns}
+        showIndexColumn
         searchFormSchemas={searchFormSchemas}
         toolbarActions={toolbarNode}
         searchFormProps={{

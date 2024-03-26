@@ -1,10 +1,9 @@
 import type { TableColumnType } from 'antd'
 
 export interface ColumnProps<R = any> extends TableColumnType<R> {
-  title?: RN
+  id: string
 
-  /** @default true */
-  show?: boolean
+  title?: RN
 
   /** @default false */
   pinnedLeft?: boolean

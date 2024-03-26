@@ -12,10 +12,10 @@ import type { TableInstance, TableProps } from './types'
 const Table = forwardRef<TableInstance, TableProps>((props, ref) => {
   const {
     title,
-    columns,
+    columns: _columns,
     api,
     rowKey = 'id',
-    showIndexColumn = true,
+    showIndexColumn = false,
     size = 'middle',
     enablePagination = true,
     bordered = true,
@@ -24,15 +24,14 @@ const Table = forwardRef<TableInstance, TableProps>((props, ref) => {
     searchFormProps,
   } = props
 
+  const formRef = useRef<FormInstance>(null)
   const [tableData, setTableData] = useState<any[]>([])
-  const [internalShowIndex, setInternalShowIndex] = useState(true)
   const [pageNo, setPageNo] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [total, setTotal] = useState(0)
   const [sortParams, setSortParams] = useState<SortDto>()
 
-  const finalShowIndex = showIndexColumn && internalShowIndex
-  const formRef = useRef<FormInstance>(null)
+  const [internalShowIndex, setInternalShowIndex] = useState(showIndexColumn)
 
   const { loading, run } = useRequest(
     () => api({
@@ -56,7 +55,11 @@ const Table = forwardRef<TableInstance, TableProps>((props, ref) => {
     },
   )
 
-  const [antColumns, setAntColumns] = useState(getAntColumns(columns, finalShowIndex))
+  const [columns, setColumns] = useState(_columns)
+  const antColumns = useMemo(
+    () => getAntColumns(columns, internalShowIndex),
+    [columns, internalShowIndex],
+  )
 
   const showSearchForm = searchFormSchemas && searchFormSchemas.length > 0
 
@@ -114,10 +117,10 @@ const Table = forwardRef<TableInstance, TableProps>((props, ref) => {
             <Space>
               <TipButton title="刷新" icon={<ReloadOutlined />} onClick={run} />
               <ColumnsSetting
-                showIndexColumn={finalShowIndex}
-                onShowIndexColumnChange={setInternalShowIndex}
                 columns={columns}
-                onChange={cols => setAntColumns(getAntColumns(cols, finalShowIndex))}
+                showIndexColumn={internalShowIndex}
+                onChange={setColumns}
+                onShowIndexColumnChange={setInternalShowIndex}
               />
             </Space>
           </div>
@@ -131,6 +134,7 @@ const Table = forwardRef<TableInstance, TableProps>((props, ref) => {
           bordered={bordered}
           columns={antColumns}
           dataSource={tableData}
+          scroll={{ scrollToFirstRowOnChange: true, x: 1300, y: 300 }}
           onChange={handleTableChange}
         />
       </Card>
