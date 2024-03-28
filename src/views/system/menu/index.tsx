@@ -1,22 +1,17 @@
-import { EditOutlined } from '@ant-design/icons'
-import { Button, Tag, message } from 'antd'
+import { Button, message } from 'antd'
 import { produce } from 'immer'
 import { isNumber } from 'lodash-es'
 
 import { createMenu, deleteMenu, getMenuTree, updateMenu } from '@/apis/system/menu'
 import type { MenuDto, MenuTreeVo } from '@/apis/system/menu'
-import { ConfirmButton } from '@/components/Button'
 import { BasicDrawer, useDrawer } from '@/components/Drawer'
 import type { FormInstance } from '@/components/Form'
 import { Form } from '@/components/Form'
 import { AnimatedRoute } from '@/components/Motion'
 import { Table } from '@/components/Table'
-import type { ColumnProps, TableInstance } from '@/components/Table'
-import { renderAntdIcon } from '@/utils/ant-design-icons'
-import { formatDateTimeString } from '@/utils/date-time'
-import { randomId } from '@/utils/random'
+import type { ActionColumn, TableInstance } from '@/components/Table'
 
-import { formInitialValues, formSchemas, searchFormSchemas } from './menu.config'
+import { formInitialValues, formSchemas, searchFormSchemas, tableColumns } from './menu.config'
 
 export default function Menu() {
   const formRef = useRef<FormInstance<MenuDto>>(null)
@@ -65,76 +60,6 @@ export default function Menu() {
     }
   }
 
-  function handleClickEdit(r: MenuTreeVo) {
-    updateId.current = r.id
-    setInitialValues(r)
-    openDrawer()
-  }
-
-  async function handleClickDelete(id: number) {
-    await deleteMenu(id)
-    message.success('删除成功')
-    tableRef.current?.reload()
-  }
-
-  const columns: ColumnProps<MenuTreeVo>[] = [
-    { id: randomId(), title: '菜单名称', dataIndex: 'name' },
-    {
-      id: randomId(),
-      title: '图标',
-      dataIndex: 'icon',
-      width: 50,
-      align: 'center',
-      render(v) {
-        return renderAntdIcon(v)
-      },
-    },
-    { id: randomId(), title: '权限标识', dataIndex: 'permission', align: 'center' },
-    { id: randomId(), title: '组件', dataIndex: 'component', align: 'center' },
-    { id: randomId(), title: '排序', dataIndex: 'orderNo', align: 'center', width: 60 },
-    {
-      id: randomId(),
-      title: '状态',
-      dataIndex: 'status',
-      align: 'center',
-      width: 80,
-      render(v) {
-        return v === 1
-          ? <Tag color="success" className="m-0">启用</Tag>
-          : <Tag color="error" className="m-0">停用</Tag>
-      },
-    },
-    {
-      id: randomId(),
-      title: '创建时间',
-      dataIndex: 'createdAt',
-      align: 'center',
-      width: 180,
-      sorter: true,
-      render: v => formatDateTimeString(v),
-    },
-    {
-      id: randomId(),
-      title: '操作',
-      key: 'options',
-      align: 'center',
-      width: 80,
-      render(_, record) {
-        return (
-          <>
-            <Button
-              type="link"
-              size="small"
-              icon={<EditOutlined />}
-              onClick={() => handleClickEdit(record)}
-            />
-            <ConfirmButton onConfirm={() => handleClickDelete(record.id)} />
-          </>
-        )
-      },
-    },
-  ]
-
   const { run: getTree } = useRequest(getMenuTree, {
     manual: true,
     onSuccess([res, err]) {
@@ -160,6 +85,17 @@ export default function Menu() {
     </Button>
   )
 
+  const actionColumnConfig = useMemo<ActionColumn<MenuTreeVo>>(() => ({
+    deleteable: true,
+    editable: true,
+    deleteApi: deleteMenu,
+    onRowEditAction(_, r) {
+      updateId.current = r.id
+      setInitialValues(r)
+      openDrawer()
+    },
+  }), [openDrawer])
+
   return (
     <AnimatedRoute>
       <Table
@@ -168,13 +104,14 @@ export default function Menu() {
         api={getMenuTree}
         enablePagination={false}
         showIndexColumn={false}
-        columns={columns}
+        columns={tableColumns}
         searchFormSchemas={searchFormSchemas}
         toolbarActions={toolbarNode}
         searchFormProps={{
           colProps: { span: 8 },
           labelWidth: 100,
         }}
+        actionColumn={actionColumnConfig}
       />
 
       <BasicDrawer

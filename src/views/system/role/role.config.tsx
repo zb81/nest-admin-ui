@@ -1,5 +1,7 @@
 import type { RoleDto, RoleVo } from '@/apis/system/role'
 import type { FormSchema } from '@/components/Form'
+import type { ColumnProps } from '@/components/Table'
+import { formatDateTimeString } from '@/utils/date-time'
 
 export const formInitialValues: RoleDto = {
   name: '',
@@ -74,5 +76,39 @@ export const formSchemas: FormSchema<RoleDto>[] = [
       fieldNames: { label: 'name', value: 'id' },
       getPopupContainer: () => document.body,
     },
+  },
+]
+
+export const tableColumns: ColumnProps<RoleVo>[] = [
+  {
+    dataIndex: 'name',
+    width: 200,
+    title: '角色名称',
+    align: 'center',
+  },
+  {
+    dataIndex: 'value',
+    width: 180,
+    title: '角色标识',
+    align: 'center',
+  },
+  {
+    dataIndex: 'status',
+    title: '状态',
+    width: 120,
+    align: 'center',
+  },
+  {
+    dataIndex: 'createdAt',
+    sorter: true,
+    title: '创建时间',
+    width: 180,
+    align: 'center',
+    render: v => formatDateTimeString(v),
+  },
+  {
+    dataIndex: 'remark',
+    title: '备注',
+    align: 'center',
   },
 ]

@@ -4,11 +4,11 @@ export function useDrawer() {
 
   return {
     open,
-    openDrawer: () => setOpen(true),
-    closeDrawer: () => setOpen(false),
+    openDrawer: useCallback(() => setOpen(true), []),
+    closeDrawer: useCallback(() => setOpen(false), []),
 
     confirmLoading,
-    startConfirmLoading: () => setConfirmLoading(true),
-    stopConfirmLoading: () => setConfirmLoading(false),
+    startConfirmLoading: useCallback(() => setConfirmLoading(true), []),
+    stopConfirmLoading: useCallback(() => setConfirmLoading(false), []),
   } as const
 }

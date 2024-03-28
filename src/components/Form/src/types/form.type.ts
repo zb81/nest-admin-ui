@@ -31,5 +31,5 @@ export interface FormProps<V = any> {
   labelWidth?: number | string
   labelCol?: ColProps
   wrapperCol?: ColProps
-  size?: 'small' | 'middle' | 'large'
+  size?: Size
 }

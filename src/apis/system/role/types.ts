@@ -3,7 +3,7 @@ export interface RoleDto {
   value: string
   name: string
   status: number
-  remark?: string
+  remark: string | null
   menuIds: number[]
 }
 
@@ -16,4 +16,5 @@ export interface RoleVo {
   default: boolean | null
   createdAt: string
   updatedAt: string
+  menuIds: number[]
 }

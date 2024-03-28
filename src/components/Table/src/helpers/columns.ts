@@ -16,7 +16,6 @@ export function getAntColumns<R extends object>(columns: ColumnProps<R>[], showI
       title: '序号',
       key: '$index$',
       align: 'center',
-      width: 60,
       render: (_, __, index) => index + 1,
     })
   }

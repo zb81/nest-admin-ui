@@ -2,7 +2,7 @@ import type { TableProps as AntTableProps } from 'antd'
 
 import type { FormProps, FormSchema } from '@/components/Form'
 
-import type { ColumnProps } from './column.type'
+import type { ActionColumn, ColumnProps } from './column.type'
 
 type Res<R> = R[] | PaginationResWrapper<R>
 
@@ -18,7 +18,10 @@ export interface TableProps<R = any> {
   /** 是否显示边框 @default true */
   bordered?: boolean
   /** 表格尺寸 @default 'middle' */
-  size?: 'small' | 'middle' | 'large'
+  size?: Size
+
+  /** 操作列配置，没传则不展示 */
+  actionColumn?: ActionColumn<R>
 
   searchFormSchemas?: FormSchema[]
   searchFormProps?: FormProps

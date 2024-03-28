@@ -20,3 +20,8 @@
 .input-trigger .ant-input {
   cursor: pointer;
 }
+
+.table-large th.ant-table-cell,
+.table-large td.ant-table-cell {
+  padding: 16px 8px !important;
+}

@@ -14,7 +14,7 @@ export function updateMenu(data: MenuDto) {
   return request.put(`/system/menu/${data.id}`, { data })
 }
 
-export function deleteMenu(id: number) {
+export function deleteMenu(id: Key) {
   return request.delete(`/system/menu/${id}`)
 }
 

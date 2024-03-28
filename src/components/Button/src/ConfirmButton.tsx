@@ -14,7 +14,16 @@ export default function ConfirmButton(props: PWC<ConfirmButtonProps>) {
     ...antdProps
   } = props
 
-  const triggerNode = <Button disabled={disabled} type="text" danger icon={<DeleteOutlined />}></Button>
+  const triggerNode = (
+    <Button
+      size="small"
+      disabled={disabled}
+      type="text"
+      danger
+      icon={<DeleteOutlined />}
+    >
+    </Button>
+  )
 
   if (disabled)
     return triggerNode

@@ -7,7 +7,7 @@ export default function TipButton(props: PWC<TipButtonProps>) {
     title,
     icon,
     onClick,
-    placement = 'bottom',
+    placement = 'top',
     children,
   } = props
 

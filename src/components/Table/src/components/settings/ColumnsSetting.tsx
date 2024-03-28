@@ -1,10 +1,27 @@
 import { SettingOutlined } from '@ant-design/icons'
 import type { DragEndEvent } from '@dnd-kit/core'
-import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from '@dnd-kit/core'
-import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { Button, Checkbox, Popover } from 'antd'
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import type {
+  SortableContextProps,
+} from '@dnd-kit/sortable'
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import { Checkbox, Popover } from 'antd'
 
-import type { ColumnsSettingProps } from '../types'
+import { TipButton } from '@/components/Button'
+
+import type { ColumnsSettingProps } from '../../types'
 
 import ColumnItem from './ColumnItem'
 
@@ -36,8 +53,15 @@ function ColumnsSetting(props: ColumnsSettingProps) {
   }
 
   const contentNode = (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={columns} strategy={verticalListSortingStrategy}>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext
+        items={columns as SortableContextProps['items']}
+        strategy={verticalListSortingStrategy}
+      >
         {columns.map((col) => {
           const {
             hidden = false,
@@ -48,7 +72,7 @@ function ColumnsSetting(props: ColumnsSettingProps) {
           return (
             <li key={col.id}>
               <ColumnItem
-                id={col.id}
+                id={col.id!}
                 title={col.title}
                 state={{ hidden, pinnedLeft, pinnedRight }}
                 onChange={(state) => {
@@ -73,7 +97,7 @@ function ColumnsSetting(props: ColumnsSettingProps) {
       title={titleNode}
       content={contentNode}
     >
-      <Button title="列设置" type="text" icon={<SettingOutlined />}></Button>
+      <TipButton title="列设置" icon={<SettingOutlined />} />
     </Popover>
   )
 }

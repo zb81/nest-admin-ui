@@ -4,18 +4,15 @@ import { isNumber } from 'lodash-es'
 
 import { getMenuTree } from '@/apis/system/menu'
 import type { RoleDto, RoleVo } from '@/apis/system/role'
-import { createRole, getRoleList, updateRole } from '@/apis/system/role'
+import { createRole, deleteRole, getRoleList, updateRole } from '@/apis/system/role'
 import { BasicDrawer, useDrawer } from '@/components/Drawer'
 import type { FormInstance } from '@/components/Form'
 import { Form } from '@/components/Form'
 import { AnimatedRoute } from '@/components/Motion'
-import type { ColumnProps, TableInstance } from '@/components/Table'
+import type { ActionColumn, TableInstance } from '@/components/Table'
 import { Table } from '@/components/Table'
-import { formatDateTimeString } from '@/utils/date-time'
 
-import { randomId } from '@/utils/random'
-
-import { formInitialValues, formSchemas, searchFormSchemas } from './role.config'
+import { formInitialValues, formSchemas, searchFormSchemas, tableColumns } from './role.config'
 
 export default function Role() {
   const {
@@ -62,19 +59,16 @@ export default function Role() {
     }
   }
 
-  const columns: ColumnProps<RoleVo>[] = [
-    { id: randomId(), dataIndex: 'name', title: '角色名称' },
-    { id: randomId(), dataIndex: 'value', title: '角色标识' },
-    { id: randomId(), dataIndex: 'status', title: '状态' },
-    {
-      id: randomId(),
-      dataIndex: 'createdAt',
-      sorter: true,
-      title: '创建时间',
-      render: v => formatDateTimeString(v),
+  const actionColumnConfig = useMemo<ActionColumn<RoleVo>>(() => ({
+    deleteable: true,
+    editable: true,
+    deleteApi: deleteRole,
+    onRowEditAction(_, r) {
+      updateId.current = r.id
+      setInitialValues(r)
+      openDrawer()
     },
-    { id: randomId(), dataIndex: 'remark', key: 'remark', title: '备注' },
-  ]
+  }), [openDrawer])
 
   const { run: getTree } = useRequest(getMenuTree, {
     manual: true,
@@ -107,14 +101,14 @@ export default function Role() {
         ref={tableRef}
         title="角色列表"
         api={getRoleList}
-        columns={columns}
-        showIndexColumn
+        columns={tableColumns}
         searchFormSchemas={searchFormSchemas}
         toolbarActions={toolbarNode}
         searchFormProps={{
           colProps: { span: 8 },
           labelWidth: 100,
         }}
+        actionColumn={actionColumnConfig}
       />
 
       <BasicDrawer

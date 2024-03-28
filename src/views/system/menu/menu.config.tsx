@@ -1,8 +1,8 @@
 import { Tag } from 'antd'
-import type { TableColumnsType } from 'antd'
 
 import type { MenuDto, MenuTreeVo } from '@/apis/system/menu'
 import type { FormSchema } from '@/components/Form'
+import type { ColumnProps } from '@/components/Table'
 import { renderAntdIcon } from '@/utils/ant-design-icons'
 import { formatDateTimeString } from '@/utils/date-time'
 
@@ -18,51 +18,6 @@ export const formInitialValues: MenuDto = {
   status: 1,
   show: 1,
 } as const
-
-export function genColumns(optRender: (record: MenuTreeVo) => RN): TableColumnsType<MenuTreeVo> {
-  return [
-    { title: '菜单名称', dataIndex: 'name' },
-    {
-      title: '图标',
-      dataIndex: 'icon',
-      width: 50,
-      align: 'center',
-      render(v) {
-        return renderAntdIcon(v)
-      },
-    },
-    { title: '权限标识', dataIndex: 'permission', align: 'center' },
-    { title: '组件', dataIndex: 'component', align: 'center' },
-    { title: '排序', dataIndex: 'orderNo', align: 'center', width: 60 },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      align: 'center',
-      width: 80,
-      render(v) {
-        return v === 1
-          ? <Tag color="success" className="m-0">启用</Tag>
-          : <Tag color="error" className="m-0">停用</Tag>
-      },
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createdAt',
-      align: 'center',
-      width: 180,
-      render: v => formatDateTimeString(v),
-    },
-    {
-      title: '操作',
-      key: 'options',
-      align: 'center',
-      width: 80,
-      render(_, record) {
-        return optRender(record)
-      },
-    },
-  ]
-}
 
 export const searchFormSchemas: FormSchema[] = [
   {
@@ -200,5 +155,57 @@ export const formSchemas: FormSchema<MenuDto>[] = [
       ],
     },
     show: ({ values }) => !isButton(values.type),
+  },
+]
+
+export const tableColumns: ColumnProps<MenuTreeVo>[] = [
+  {
+    title: '菜单名称',
+    dataIndex: 'name',
+  },
+  {
+    title: '图标',
+    dataIndex: 'icon',
+    width: 50,
+    align: 'center',
+    render(v) {
+      return renderAntdIcon(v)
+    },
+  },
+  {
+    title: '权限标识',
+    dataIndex: 'permission',
+    align: 'center',
+    width: 200,
+  },
+  {
+    title: '组件',
+    dataIndex: 'component',
+    align: 'center',
+  },
+  {
+    title: '排序',
+    dataIndex: 'orderNo',
+    align: 'center',
+    width: 50,
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+    align: 'center',
+    width: 80,
+    render(v) {
+      return v === 1
+        ? <Tag color="success" className="m-0">启用</Tag>
+        : <Tag color="error" className="m-0">停用</Tag>
+    },
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createdAt',
+    align: 'center',
+    width: 180,
+    sorter: true,
+    render: v => formatDateTimeString(v),
   },
 ]

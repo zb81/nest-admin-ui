@@ -14,7 +14,7 @@ export function updateRole(data: RoleDto) {
   return request.put(`/system/role/${data.id}`, { data })
 }
 
-export function deleteRole(id: number) {
+export function deleteRole(id: Key) {
   return request.delete(`/system/role/${id}`)
 }
 
